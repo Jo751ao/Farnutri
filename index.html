@@ -1,0 +1,1687 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FarNutri - Seu Guia Suplementativo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            @apply bg-rose-50 text-slate-800; 
+        }
+        .hero-bg {
+            background: linear-gradient(to right, #e11d48, #be123c); 
+        }
+        .section-title {
+            @apply text-4xl font-extrabold text-center mb-3 text-red-700; 
+        }
+        .section-title-subtle {
+            @apply text-center text-slate-600 mb-12 text-lg max-w-2xl mx-auto leading-relaxed;
+        }
+        .suplemento-detalhe-content h3 { 
+            @apply text-2xl font-bold text-red-700 mb-5 mt-8 first:mt-0; 
+        }
+         .suplemento-detalhe-content h4 { 
+            @apply text-xl font-semibold text-red-600 mt-6 mb-3;
+        }
+        .content-box {
+            @apply bg-white p-6 md:p-10 rounded-2xl shadow-2xl mb-12;
+        }
+        .suplemento-card {
+            @apply bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 ease-in-out overflow-hidden flex flex-col transform hover:-translate-y-2;
+        }
+        .suplemento-card img {
+            @apply w-full h-56 object-cover;
+        }
+        .suplemento-card-content {
+            @apply p-6 flex flex-col flex-grow;
+        }
+        .suplemento-card-title {
+            @apply text-xl font-bold text-red-700 mb-2; 
+        }
+        .suplemento-card-desc {
+            @apply text-sm text-slate-600 mb-5 flex-grow leading-relaxed;
+        }
+        .cta-button-card { /* Nova classe para o botão "Ver Detalhes" */
+            @apply bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out inline-block text-base transform hover:scale-105;
+        }
+        .cta-button { /* Botão principal de ação, mantido como estava ou pode ser unificado se desejado */
+            @apply bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out inline-block text-base transform hover:scale-105;
+        }
+        .nav-link {
+            @apply text-slate-700 hover:text-red-600 px-4 py-2 rounded-lg text-sm font-semibold transition-colors duration-200 ease-in-out;
+        }
+        .nav-link-active {
+            @apply bg-red-100 text-red-700 shadow-md; 
+        }
+        .disclaimer-box {
+            @apply bg-amber-50 border-l-4 border-amber-500 text-amber-800 p-5 rounded-lg my-6 text-sm leading-relaxed shadow-md;
+        }
+        .disclaimer-box-strong {
+            @apply bg-pink-50 border-l-4 border-pink-600 text-pink-800 p-5 rounded-lg my-6 font-medium shadow-md; 
+        }
+        .suplemento-detalhe-section { 
+            @apply pt-12 opacity-0 transition-opacity duration-500 ease-in-out;
+             min-height: 60vh; 
+        }
+        .suplemento-detalhe-section.visible { 
+            @apply opacity-100;
+        }
+        .hidden-section { 
+            display: none !important;
+        }
+        label {
+            @apply block text-sm font-semibold text-slate-700 mb-1.5;
+        }
+        input[type="text"], input[type="number"], select {
+            @apply mt-1 block w-full rounded-xl border-slate-300 shadow-sm focus:border-red-500 focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 sm:text-sm p-3.5 transition-shadow duration-200; 
+        }
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #ffe4e6; 
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #f43f5e; 
+            border-radius: 10px;
+            border: 2px solid #ffe4e6;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #e11d48; 
+        }
+        .suplemento-info-completa p, .suplemento-info-completa li { 
+            @apply mb-3 leading-relaxed text-slate-700;
+        }
+        .suplemento-info-completa ul, .suplemento-info-completa ol {
+            @apply list-disc list-inside space-y-1.5 pl-3; 
+        }
+        .assistente-form-container {
+            @apply bg-white p-6 md:p-10 rounded-2xl shadow-2xl max-w-3xl mx-auto;
+        }
+        .assistente-resultado-container {
+            @apply mt-8 bg-rose-50 p-6 rounded-xl border border-rose-200 shadow-lg; 
+        }
+        .voltar-catalogo-btn {
+            @apply mb-10 text-red-600 hover:text-red-700 font-semibold inline-flex items-center transition-colors duration-200 text-base;
+        }
+        .voltar-catalogo-btn svg {
+            @apply mr-2.5 h-5 w-5;
+        }
+        .anvisa-link {
+            @apply text-xs text-red-600 hover:underline;
+        }
+        .emphasis-text { 
+            @apply font-semibold text-red-700;
+        }
+        .category-tag { 
+            @apply inline-block bg-red-100 text-red-700 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full mb-2;
+        }
+        .loader {
+            border: 4px solid #fdf2f2; 
+            border-top: 4px solid #e11d48; 
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto; 
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white/90 backdrop-blur-lg shadow-xl sticky top-0 z-50">
+        <nav class="container mx-auto px-4 lg:px-6 py-4">
+            <div class="flex flex-wrap justify-between items-center">
+                <a href="#inicio" class="flex items-center group">
+                     <svg class="h-9 w-9 text-red-600 mr-2.5 group-hover:text-red-500 transition-colors duration-300"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round">  <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />  <polyline points="14 2 14 8 20 8" />  <line x1="16" y1="13" x2="8" y2="13" />  <line x1="16" y1="17" x2="8" y2="17" />  <line x1="10" y1="9" x2="8" y2="9" /></svg>
+                    <span class="text-2xl font-extrabold text-red-700 group-hover:text-red-600 transition-colors duration-300">FarNutri</span>
+                </a>
+                <button data-collapse-toggle="mobile-menu" type="button" class="inline-flex items-center p-2.5 ml-3 text-sm text-slate-500 rounded-lg md:hidden hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-slate-200 transition-colors" aria-controls="mobile-menu" aria-expanded="false">
+                    <span class="sr-only">Abrir menu principal</span>
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path></svg>
+                </button>
+                <div class="hidden w-full md:block md:w-auto" id="mobile-menu">
+                    <ul class="flex flex-col mt-4 md:flex-row md:space-x-2 md:mt-0 md:text-sm">
+                        <li><a href="#inicio" class="nav-link nav-link-active" data-nav-target="inicio">Início</a></li>
+                        <li><a href="#catalogo-home" class="nav-link" data-nav-target="catalogo-home">Catálogo</a></li>
+                        <li><a href="#assistente-interacoes" class="nav-link" data-nav-target="assistente-interacoes">Interações (IA)</a></li>
+                        <li><a href="#assistente-nutricao" class="nav-link" data-nav-target="assistente-nutricao">Nutrição</a></li>
+                        <li><a href="#sobre-guia" class="nav-link" data-nav-target="sobre-guia">Sobre</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <section id="inicio" class="hero-bg py-20 md:py-28 text-white">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold mb-8 leading-tight tracking-tight">
+                FarNutri: Seu guia suplementativo.
+            </h1>
+            <p class="text-lg md:text-xl text-red-50 mb-12 max-w-3xl mx-auto leading-relaxed">
+                Informações detalhadas e ferramentas úteis sobre suplementos alimentares, baseadas em evidências científicas e dados regulatórios. Capacite suas escolhas!
+            </p>
+            <a href="#catalogo-home" class="bg-white hover:bg-rose-50 text-red-700 font-bold py-4 px-10 rounded-xl shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 ease-in-out text-lg">
+                Explorar Suplementos
+            </a>
+            <div class="bg-white/20 backdrop-blur-md border border-white/30 text-red-50 p-6 rounded-xl mt-16 max-w-4xl mx-auto text-left shadow-xl">
+                <h2 class="font-bold text-2xl mb-4">⚠️ Atenção Fundamental:</h2>
+                <p class="text-base leading-relaxed">O FarNutri é uma ferramenta de caráter exclusivamente educativo. As informações e calculadoras aqui apresentadas <strong>NÃO substituem, em hipótese alguma, a avaliação, diagnóstico, tratamento ou orientação de um profissional de saúde qualificado</strong> (médico, nutricionista, farmacêutico).</p>
+                <p class="mt-3 text-base leading-relaxed">Antes de usar qualquer suplemento, modificar sua dieta ou rotina, <strong>CONSULTE SEMPRE UM PROFISSIONAL DE SAÚDE</strong>. A automedicação e o uso inadequado de suplementos podem ser prejudiciais.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="catalogo-home" class="py-20 md:py-24">
+        <div class="container mx-auto px-4">
+            <h2 class="section-title">Catálogo de Suplementos</h2>
+            <p class="section-title-subtle">
+                Navegue pela nossa seleção de suplementos. Clique em "Ver Detalhes" para acessar informações completas sobre composição, uso, benefícios baseados em evidências, alegações permitidas pela ANVISA e muito mais.
+                <br><span class="text-sm text-slate-500 mt-2 block">(Nota: Um sistema de filtros avançados por categoria ou objetivo é um recurso planejado para futuras atualizações de um site dinâmico.)</span>
+            </p>
+            <div id="catalogo-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-10">
+                </div>
+
+            <div id="detalhes-suplemento-container" class="mt-16 md:mt-20">
+                 </div>
+        </div>
+    </section>
+
+    <section id="assistente-interacoes" class="py-20 md:py-24 bg-rose-100">
+        <div class="container mx-auto px-4">
+            <h2 class="section-title">Assistente de Verificação de Interações (com IA Gemini)</h2>
+            <p class="section-title-subtle">
+                Insira dois nomes (suplemento, medicamento ou alimento) para uma análise de possíveis interações fornecida por Inteligência Artificial.
+            </p>
+            <div class="assistente-form-container">
+                <div class="grid sm:grid-cols-2 gap-x-6 gap-y-4 mb-8">
+                    <div>
+                        <label for="item1-interacao">Item 1 (Suplemento/Medicamento/Alimento):</label>
+                        <input type="text" id="item1-interacao" placeholder="Ex: Ômega 3">
+                    </div>
+                    <div>
+                        <label for="item2-interacao">Item 2 (Suplemento/Medicamento/Alimento):</label>
+                        <input type="text" id="item2-interacao" placeholder="Ex: Varfarina">
+                    </div>
+                </div>
+                <button id="btn-verificar-interacao-ia" class="w-full sm:w-auto cta-button bg-red-600 hover:bg-red-700">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2 inline">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L1.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.25 12L17 14.25l-1.25-2.25L13.5 11l2.25-1.25L17 7.5l1.25 2.25L20.5 11l-2.25 1.25z"/>
+                    </svg>
+                    Analisar Interação com IA
+                </button>
+
+                <div id="resultado-interacao-ia" class="assistente-resultado-container mt-10 hidden-section">
+                    </div>
+                 <div class="disclaimer-box-strong mt-10">
+                    <p class="font-semibold text-lg">⚠️ Ferramenta Educacional Avançada:</p>
+                    <p>Este assistente utiliza Inteligência Artificial (IA Gemini) para fornecer uma análise sobre possíveis interações. As informações geradas são para fins <strong>educativos e informativos</strong>, baseadas no conhecimento da IA até sua última atualização.</p>
+                    <p class="mt-2"><strong>Esta análise NÃO substitui, em hipótese alguma, o aconselhamento, diagnóstico ou tratamento de um farmacêutico, médico ou outro profissional de saúde qualificado.</strong> As interações medicamentosas e com suplementos podem ser extremamente complexas, variar individualmente e ter consequências graves.</p>
+                    <p class="mt-2"><strong>Sempre discuta todas as suas medicações e suplementos com seus profissionais de saúde antes de fazer qualquer alteração.</strong> Não tome decisões sobre sua saúde baseando-se unicamente nas informações fornecidas por esta ferramenta.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="assistente-nutricao" class="py-20 md:py-24">
+        <div class="container mx-auto px-4">
+            <h2 class="section-title">Assistente de Estimativas Nutricionais</h2>
+            <p class="section-title-subtle">
+                Preencha os campos abaixo para obter uma estimativa de suas necessidades calóricas e de macronutrientes.
+            </p>
+            <div class="assistente-form-container">
+                <form id="form-nutricao" class="space-y-6">
+                    <div class="grid sm:grid-cols-2 gap-x-6 gap-y-4">
+                        <div>
+                            <label for="idade-nutricao">Idade (anos):</label>
+                            <input type="number" id="idade-nutricao" placeholder="Ex: 30" required min="1" max="120">
+                        </div>
+                        <div>
+                            <label for="sexo-nutricao">Sexo Biológico:</label>
+                            <select id="sexo-nutricao" required>
+                                <option value="" disabled selected>Selecione...</option>
+                                <option value="masculino">Masculino</option>
+                                <option value="feminino">Feminino</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="grid sm:grid-cols-2 gap-x-6 gap-y-4">
+                        <div>
+                            <label for="peso-nutricao">Peso (kg):</label>
+                            <input type="number" id="peso-nutricao" step="0.1" placeholder="Ex: 70.5" required min="1">
+                        </div>
+                        <div>
+                            <label for="altura-nutricao">Altura (cm):</label>
+                            <input type="number" id="altura-nutricao" placeholder="Ex: 175" required min="1">
+                        </div>
+                    </div>
+                    <div>
+                        <label for="atividade-nutricao">Nível de Atividade Física:</label>
+                        <select id="atividade-nutricao" required>
+                            <option value="" disabled selected>Selecione...</option>
+                            <option value="1.2">Sedentário (pouco ou nenhum exercício)</option>
+                            <option value="1.375">Levemente Ativo (exercício leve 1-3 dias/semana)</option>
+                            <option value="1.55">Moderadamente Ativo (exercício moderado 3-5 dias/semana)</option>
+                            <option value="1.725">Muito Ativo (exercício intenso 6-7 dias/semana)</option>
+                            <option value="1.9">Extremamente Ativo (exercício muito intenso, trabalho físico)</option>
+                        </select>
+                    </div>
+                    <button type="submit" id="btn-calcular-nutricao" class="w-full sm:w-auto cta-button">
+                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2 inline">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 15.75V18m-7.5-6.75h.008v.008H8.25v-.008zm0 2.25h.008v.008H8.25V13.5zm0 2.25h.008v.008H8.25v-.008zm0 2.25h.008v.008H8.25V18zm2.498-6.75h.007v.008h-.007v-.008zm0 2.25h.007v.008h-.007V13.5zm0 2.25h.007v.008h-.007v-.008zm0 2.25h.007v.008h-.007V18zm2.504-6.75h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V13.5zm0 2.25h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V18zm2.498-6.75h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V13.5zM8.25 6h7.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        Calcular Estimativas
+                    </button>
+                </form>
+
+                <div id="resultado-nutricao" class="assistente-resultado-container mt-10 hidden-section">
+                     </div>
+                <div class="disclaimer-box-strong mt-10">
+                    <p class="font-semibold text-lg">⚠️ Ferramenta Educacional - Estimativas:</p>
+                    <p>Os cálculos fornecidos são <strong>estimativas gerais</strong> baseadas em fórmulas padrão e têm fins puramente educativos. Suas necessidades nutricionais reais podem variar. <strong>NÃO utilize estas informações como um plano nutricional ou substituto para o aconselhamento de um nutricionista ou médico.</strong> Um profissional qualificado pode fornecer uma avaliação individualizada e um plano alimentar adequado às suas necessidades e objetivos específicos.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer id="sobre-guia" class="bg-slate-900 text-slate-400 py-20">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-x-10 gap-y-12 mb-12">
+                <div>
+                    <h5 class="text-xl font-bold text-white mb-5">FarNutri</h5>
+                    <p class="text-sm leading-relaxed">Seu guia suplementativo. Nosso objetivo é fornecer dados claros, detalhados e baseados em evidências, sempre incentivando o acompanhamento profissional qualificado.</p>
+                </div>
+                <div>
+                    <h5 class="text-xl font-bold text-white mb-5">Links Rápidos</h5>
+                    <ul class="space-y-2.5 text-sm">
+                        <li><a href="#inicio" class="hover:text-red-400 transition-colors">Início</a></li>
+                        <li><a href="#catalogo-home" class="hover:text-red-400 transition-colors">Catálogo de Suplementos</a></li>
+                        <li><a href="#assistente-interacoes" class="hover:text-red-400 transition-colors">Interações (IA)</a></li>
+                        <li><a href="#assistente-nutricao" class="hover:text-red-400 transition-colors">Assistente de Nutrição</a></li>
+                        <li><a href="https://www.gov.br/anvisa/pt-br" target="_blank" rel="noopener noreferrer" class="hover:text-red-400 transition-colors">ANVISA (Site Oficial)</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="text-xl font-bold text-white mb-5">Aviso Legal Fundamental</h5>
+                    <p class="text-sm leading-relaxed">As informações contidas neste site (FarNutri) são fornecidas apenas para fins educacionais e informativos gerais. Elas não se destinam a diagnosticar, tratar, curar ou prevenir qualquer doença ou condição de saúde, e não devem ser consideradas como aconselhamento médico, nutricional, farmacêutico ou de qualquer outro profissional de saúde qualificado.</p>
+                    <p class="text-sm mt-3 leading-relaxed">Sempre procure o aconselhamento de seu médico ou outro profissional de saúde qualificado com quaisquer perguntas que você possa ter sobre uma condição médica ou antes de iniciar qualquer novo tratamento, dieta ou regime de condicionamento físico, incluindo o uso de suplementos alimentares.</p>
+                </div>
+            </div>
+            <div class="mt-16 border-t border-slate-700 pt-10 text-center text-xs">
+                <p>&copy; <span id="currentYear"></span> FarNutri. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <template id="template-suplemento-detalhes">
+        <div class="suplemento-detalhe-content">
+            <button class="voltar-catalogo-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+                </svg>
+                Voltar à lista de suplementos
+            </button>
+            <h2 class="section-title suplemento-nome-titulo text-left mb-6"></h2>
+            <div class="content-box">
+                <div class="grid md:grid-cols-3 gap-x-10 gap-y-8">
+                    <div class="md:col-span-1">
+                        <img src="" alt="[Imagem de Suplemento]" class="suplemento-imagem rounded-xl shadow-lg mb-6 w-full object-cover aspect-[3/4]" onerror="this.onerror=null;this.src='https://placehold.co/500x667/cccccc/333333?text=Imagem+Indispon%C3%ADvel';">
+                        <div class="disclaimer-box">
+                            <p class="font-semibold">Lembre-se:</p>
+                            <p>Este conteúdo é informativo. Consulte um profissional de saúde antes de usar este suplemento.</p>
+                        </div>
+                    </div>
+                    <div class="md:col-span-2 text-slate-700 leading-relaxed suplemento-info-completa">
+                        </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Atualizar ano no rodapé ---
+            document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+            // --- Menu Mobile ---
+            const menuButton = document.querySelector('[data-collapse-toggle="mobile-menu"]');
+            const mobileMenu = document.getElementById('mobile-menu');
+            if (menuButton && mobileMenu) {
+                menuButton.addEventListener('click', () => {
+                    const expanded = menuButton.getAttribute('aria-expanded') === 'true' || false;
+                    menuButton.setAttribute('aria-expanded', !expanded);
+                    mobileMenu.classList.toggle('hidden');
+                });
+            }
+
+            // --- Navegação Suave e Ativação de Links do Menu ---
+            const navLinks = document.querySelectorAll('header nav a[href^="#"]');
+            const headerOffset = (document.querySelector('header')?.offsetHeight || 70) + 20; 
+
+            function updateActiveLink() {
+                let currentSectionId = 'inicio';
+                let minDistance = Infinity;
+
+                document.querySelectorAll('section[id]').forEach(section => {
+                    const rect = section.getBoundingClientRect();
+                    const distanceToTop = Math.abs(rect.top - headerOffset);
+                    if (rect.top < window.innerHeight && rect.bottom > headerOffset) {
+                         if (distanceToTop < minDistance) {
+                            minDistance = distanceToTop;
+                            currentSectionId = section.id;
+                        }
+                    }
+                });
+                
+                navLinks.forEach(link => {
+                    link.classList.remove('nav-link-active');
+                    if (link.getAttribute('href').substring(1) === currentSectionId) {
+                        link.classList.add('nav-link-active');
+                    }
+                });
+            }
+            
+            window.addEventListener('scroll', updateActiveLink, { passive: true });
+            updateActiveLink();
+
+            navLinks.forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+                        menuButton.setAttribute('aria-expanded', 'false');
+                        mobileMenu.classList.add('hidden');
+                    }
+                    const targetId = this.getAttribute('href');
+                    if (targetId === "#") {
+                        e.preventDefault();
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                        return;
+                    }
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        e.preventDefault();
+                        const elementPosition = targetElement.getBoundingClientRect().top;
+                        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                        window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+                    }
+                });
+            });
+
+            // --- Dados dos Suplementos ---
+            const dadosSuplementos = {
+                creatina: {
+                    nome: "Creatina",
+                    id: "creatina",
+                    imagemPlaceholder: "https://placehold.co/600x400/ffe4e6/c53030?text=Creatina", 
+                    descricaoCard: "Popular para aumento de força, potência e massa muscular. Um dos suplementos mais estudados.",
+                    categorias: ["Desempenho Físico", "Ganho de Massa"],
+                    htmlDetalhes: `
+                        <h3>O que é a Creatina?</h3>
+                        <p>A creatina é um composto orgânico nitrogenado, formado a partir dos aminoácidos arginina, glicina e metionina. É sintetizada endogenamente, primariamente no fígado e rins, e também pode ser obtida através da dieta, principalmente de carnes vermelhas e peixes. No corpo, cerca de 95% da creatina é armazenada nos músculos esqueléticos.</p>
+                        
+                        <h4>Composição</h4>
+                        <ul>
+                            <li><strong>Ingrediente Ativo Principal:</strong> Creatina Monohidratada (na maioria dos suplementos eficazes).</li>
+                            <li><strong>Outras Formas (menos comuns ou com menos evidências):</strong> Creatina Etil Éster, Creatina HCl, Creatina Alcalina, etc.</li>
+                            <li><strong>Excipientes Comuns:</strong> Geralmente, suplementos de creatina em pó de boa qualidade contêm poucos ou nenhuns excipientes. Versões em cápsulas podem conter antiumectantes (dióxido de silício), lubrificantes (estearato de magnésio) e material da cápsula (gelatina ou HPMC para vegetarianos). <span class="emphasis-text">Sempre verifique o rótulo do produto específico.</span></li>
+                        </ul>
+
+                        <h4>Dose Recomendada</h4>
+                        <ul>
+                            <li><strong>Fase de Saturação (Opcional):</strong> 20-25 gramas por dia, divididas em 4-5 doses de 5 gramas, por 5-7 dias. Visa saturar rapidamente os estoques musculares.</li>
+                            <li><strong>Fase de Manutenção:</strong> 3-5 gramas por dia, em dose única. Esta dose também pode ser usada desde o início, sem saturação (os estoques levarão cerca de 3-4 semanas para serem completamente preenchidos).</li>
+                            <li>A ANVISA estabelece limites para suplementos, e a recomendação de uso deve estar no rótulo. Para creatina, a recomendação usual em rótulos é de 3g/dia.</li>
+                        </ul>
+
+                        <h4>Forma de Uso</h4>
+                        <ul>
+                            <li>Pode ser consumida em qualquer horário do dia, mas a consistência diária é fundamental.</li>
+                            <li>Alguns estudos sugerem que consumir com uma fonte de carboidratos e/ou proteínas (exemplo: suco de uva, shake de whey) pode melhorar a captação muscular devido ao pico de insulina, mas o efeito não é drasticamente superior ao consumo apenas com água.</li>
+                            <li>Misturar bem em água ou outra bebida de preferência.</li>
+                            <li>Manter boa hidratação ao longo do dia é importante.</li>
+                        </ul>
+
+                        <h4>Principais Alegações Aprovadas (ANVISA)</h4>
+                        <p>A ANVISA permite alegações para suplementos de creatina destinados a atletas, como:</p>
+                        <ul>
+                            <li>"A creatina auxilia no aumento do desempenho físico durante exercícios repetidos de curta duração e alta intensidade."</li>
+                        </ul>
+                        <p class="text-sm mt-2">É importante notar que alegações terapêuticas ou de cura são proibidas para suplementos alimentares. As alegações devem ser baseadas em evidências científicas reconhecidas. (<a href="https://www.gov.br/anvisa/pt-br/assuntos/alimentos/suplementos-alimentares" target="_blank" rel="noopener noreferrer" class="anvisa-link">Consultar normativas da ANVISA</a>)</p>
+
+                        <h4>Mecanismo de Ação Simplificado</h4>
+                        <p>A creatina atua principalmente no sistema energético ATP-CP (trifosfato de adenosina - fosfocreatina). Ela aumenta os estoques de fosfocreatina nos músculos. Durante exercícios de alta intensidade e curta duração, a fosfocreatina doa um grupo fosfato para o ADP (difosfato de adenosina), regenerando rapidamente o ATP (a principal molécula de energia celular). Isso permite que os músculos mantenham um alto nível de produção de energia por mais tempo, adiando a fadiga e melhorando o desempenho.</p>
+                        
+                        <h4>Considerações ao Escolher um Produto Comercial</h4>
+                        <ul>
+                            <li><strong>Pureza:</strong> Procure por produtos que garantam alta pureza, como aqueles com selo Creapure®, que indica creatina monohidratada de alta qualidade fabricada na Alemanha.</li>
+                            <li><strong>Forma:</strong> A creatina monohidratada é a mais pesquisada e com melhor custo-benefício. Outras formas geralmente não demonstraram superioridade significativa.</li>
+                            <li><strong>Micronização:</strong> Creatina micronizada pode dissolver um pouco melhor em líquidos, mas não necessariamente melhora a absorção ou eficácia.</li>
+                            <li><strong>Aditivos:</strong> Prefira produtos sem aditivos desnecessários como corantes, aromatizantes ou grandes quantidades de carboidratos (a menos que seja uma formulação específica com esse propósito).</li>
+                        </ul>
+
+                        <h4>Principais Benefícios e Evidências Científicas</h4>
+                        <ul>
+                            <li><strong>Aumento de Força e Potência Muscular:</strong> (Evidência: Forte)</li>
+                            <li><strong>Ganho de Massa Muscular (Hipertrofia):</strong> (Evidência: Forte)</li>
+                            <li><strong>Melhora do Desempenho em Exercícios de Alta Intensidade:</strong> (Evidência: Forte)</li>
+                            <li><strong>Aceleração da Recuperação Muscular:</strong> (Evidência: Moderado)</li>
+                            <li><strong>Benefícios Cognitivos:</strong> (Evidência: Emergente/Moderado), especialmente em situações de estresse metabólico.</li>
+                        </ul>
+
+                        <h4>Status Regulatório (ANVISA)</h4>
+                        <p>A creatina monohidratada é aprovada pela ANVISA no Brasil como suplemento alimentar, desde que atenda aos requisitos de qualidade, pureza e rotulagem.</p>
+
+                        <h4>Possíveis Efeitos Colaterais e Segurança</h4>
+                        <p>Considerada segura para a maioria dos indivíduos saudáveis. Efeitos comuns incluem leve retenção hídrica intramuscular. Desconforto gastrointestinal pode ocorrer com doses altas de uma vez. Não causa dano renal em pessoas saudáveis com função renal normal.</p>
+
+                        <h4>Interações</h4>
+                        <ul>
+                            <li><strong>Cafeína:</strong> Consumo moderado geralmente não anula os benefícios.</li>
+                            <li><strong>Medicamentos Nefrotóxicos:</strong> Cautela teórica. Consulte um profissional.</li>
+                        </ul>
+                        <div class="disclaimer-box-strong mt-8">
+                            <p class="font-semibold text-lg">⚠️ Lembre-se Sempre:</p>
+                            <p>As informações são educativas. <strong>Consulte um médico ou nutricionista</strong> para avaliação individualizada.</p>
+                        </div>
+                    `
+                },
+                whey: {
+                    nome: "Whey Protein",
+                    id: "whey",
+                    imagemPlaceholder: "https://placehold.co/600x400/fecdd3/e11d48?text=Whey+Protein", 
+                    descricaoCard: "Proteína do soro do leite, para síntese proteica, recuperação muscular e aporte proteico.",
+                    categorias: ["Proteínas", "Ganho de Massa", "Recuperação"],
+                    htmlDetalhes: `
+                        <h3>O que é o Whey Protein?</h3>
+                        <p>Whey Protein é uma proteína de alta qualidade derivada do soro do leite, um subproduto da fabricação do queijo. É valorizado por seu perfil completo de aminoácidos essenciais e rápida digestão.</p>
+                        
+                        <h4>Composição</h4>
+                        <ul>
+                            <li><strong>Ingredientes Ativos Principais:</strong> Proteínas do soro do leite (Beta-lactoglobulina, Alfa-lactalbumina, Albumina do soro bovino, Imunoglobulinas, Glicomacropeptídeos). Rico em Aminoácidos de Cadeia Ramificada (BCAAs), especialmente Leucina.</li>
+                            <li><strong>Tipos Comuns:</strong>
+                                <ul>
+                                    <li><strong>Concentrado (WPC):</strong> Contém 70-80% de proteína, com alguma lactose e gordura.</li>
+                                    <li><strong>Isolado (WPI):</strong> Contém 90%+ de proteína, com mínima lactose e gordura.</li>
+                                    <li><strong>Hidrolisado (WPH):</strong> Proteínas pré-digeridas para absorção teoricamente mais rápida.</li>
+                                </ul>
+                            </li>
+                            <li><strong>Excipientes Comuns:</strong> Aromatizantes (naturais ou artificiais), adoçantes (sucralose, acessulfame-K, stevia, eritritol), espessantes (goma xantana, goma guar, carboximetilcelulose), emulsificantes (lecitina de soja ou girassol para melhorar a solubilidade), corantes. <span class="emphasis-text">Verifique o rótulo do produto.</span></li>
+                        </ul>
+
+                        <h4>Dose Recomendada</h4>
+                        <ul>
+                            <li>Varia conforme as necessidades proteicas individuais (geralmente 1.6 a 2.2g de proteína/kg de peso corporal/dia para quem busca hipertrofia, considerando todas as fontes de proteína da dieta).</li>
+                            <li>Uma porção de Whey Protein geralmente fornece de <span class="emphasis-text">20 a 30 gramas de proteína</span>.</li>
+                            <li>A quantidade total de proteína ao longo do dia é mais importante do que a dose exata em uma única tomada.</li>
+                        </ul>
+
+                        <h4>Forma de Uso</h4>
+                        <ul>
+                            <li>Comumente consumido no <span class="emphasis-text">pós-treino</span> para otimizar a recuperação e síntese proteica muscular.</li>
+                            <li>Pode ser usado em outros momentos do dia para complementar a ingestão proteica: ao acordar, entre refeições, ou como parte de lanches.</li>
+                            <li>Misturado com água, leite (vegetal ou animal), iogurte, ou adicionado a vitaminas, smoothies e receitas (panquecas, bolos proteicos).</li>
+                        </ul>
+
+                        <h4>Principais Alegações Aprovadas (ANVISA)</h4>
+                        <p>Suplementos proteicos podem ter alegações como:</p>
+                        <ul>
+                            <li>"As proteínas auxiliam na formação dos músculos e ossos."</li>
+                            <li>"Fonte de proteínas de alto valor biológico."</li>
+                        </ul>
+                        <p class="text-sm mt-2">Alegações específicas sobre ganho de massa acelerado ou substituição de refeições não são permitidas sem critérios específicos. (<a href="https://www.gov.br/anvisa/pt-br/assuntos/alimentos/suplementos-alimentares" target="_blank" rel="noopener noreferrer" class="anvisa-link">Consultar normativas da ANVISA</a>)</p>
+
+                        <h4>Mecanismo de Ação Simplificado</h4>
+                        <p>Fornece rapidamente aminoácidos essenciais, especialmente a leucina, que atua como um sinalizador chave para iniciar a síntese de novas proteínas nos músculos (MPS). Isso é crucial para a reparação de tecidos danificados pelo exercício e para o crescimento muscular (hipertrofia).</p>
+                        
+                        <h4>Considerações ao Escolher um Produto Comercial</h4>
+                        <ul>
+                            <li><strong>Tipo de Whey:</strong> WPC é mais econômico; WPI é melhor para intolerantes à lactose ou quem busca menos carboidratos/gorduras; WPH tem absorção mais rápida, mas é mais caro e pode ter sabor amargo.</li>
+                            <li><strong>Concentração Proteica:</strong> Verifique a quantidade de proteína por porção em relação ao tamanho total da porção.</li>
+                            <li><strong>Lista de Ingredientes:</strong> Prefira produtos com listas de ingredientes mais curtas e com menos aditivos artificiais, se possível.</li>
+                            <li><strong>Adoçantes e Aromatizantes:</strong> Considere suas preferências e sensibilidades.</li>
+                            <li><strong>Reputação da Marca e Laudos:</strong> Marcas com boa reputação e que disponibilizam laudos de análise de terceiros podem oferecer maior confiança na qualidade e veracidade do rótulo.</li>
+                        </ul>
+
+                        <h4>Principais Benefícios e Evidências Científicas</h4>
+                        <ul>
+                            <li>Auxílio na hipertrofia e força muscular (Evidência: Forte).</li>
+                            <li>Melhora da recuperação muscular (Evidência: Forte).</li>
+                            <li>Pode auxiliar na manutenção da massa magra durante dietas de emagrecimento (Evidência: Moderado a Forte).</li>
+                        </ul>
+                        <div class="disclaimer-box-strong mt-8">
+                            <p class="font-semibold text-lg">⚠️ Lembre-se Sempre:</p>
+                            <p>Whey é um suplemento. <strong>Consulte um nutricionista ou médico</strong> para adequar o uso.</p>
+                        </div>
+                    `
+                },
+                omega3: {
+                    nome: "Ômega 3 (EPA & DHA)",
+                    id: "omega3",
+                    imagemPlaceholder: "https://placehold.co/600x400/fee2e2/c53030?text=%C3%94mega+3", 
+                    descricaoCard: "Ácidos graxos (EPA/DHA) para saúde cardiovascular, cerebral e ação anti-inflamatória.",
+                    categorias: ["Saúde Cardiovascular", "Saúde Cerebral", "Anti-inflamatório"],
+                    htmlDetalhes: `
+                        <h3>O que é o Ômega 3?</h3>
+                        <p>Ômega 3 refere-se a uma família de ácidos graxos poli-insaturados essenciais. Os mais importantes para a saúde humana são o Ácido Eicosapentaenoico (EPA) e o Ácido Docosahexaenoico (DHA), encontrados principalmente em peixes de água fria, e o Ácido Alfa-linolênico (ALA), de origem vegetal (exemplo: linhaça, chia), que pode ser convertido em EPA e DHA pelo corpo, mas de forma limitada.</p>
+
+                        <h4>Composição</h4>
+                        <ul>
+                            <li><strong>Ingredientes Ativos Principais:</strong> Ácido Eicosapentaenoico (EPA) e Ácido Docosahexaenoico (DHA). Alguns suplementos também contêm Ácido Alfa-linolênico (ALA).</li>
+                            <li><strong>Fonte Comum:</strong> Óleo de peixe (salmão, sardinha, cavala, arenque). Alternativas incluem óleo de krill (que também contém fosfolipídios e astaxantina) e óleo de algas (fonte vegetal de EPA/DHA, ideal para vegetarianos/veganos).</li>
+                            <li><strong>Excipientes Comuns:</strong> Material da cápsula (gelatina, glicerina, água purificada), antioxidantes para preservar o óleo e evitar rancidez (exemplo: vitamina E/tocoferóis, extrato de alecrim). <span class="emphasis-text">Verifique o rótulo.</span></li>
+                        </ul>
+
+                        <h4>Dose Recomendada</h4>
+                        <ul>
+                            <li><strong>Saúde Geral (Adultos):</strong> A American Heart Association recomenda o consumo de peixe gordo pelo menos duas vezes por semana. Para suplementação, doses de <span class="emphasis-text">250-500 mg de EPA+DHA combinados por dia</span> são frequentemente sugeridas para manutenção da saúde.</li>
+                            <li><strong>Condições Específicas:</strong>
+                                <ul>
+                                    <li>Para redução de triglicerídeos: 2-4 gramas de EPA+DHA por dia (sob supervisão médica).</li>
+                                    <li>Para saúde cardíaca em pacientes com doença coronariana: Cerca de 1 grama de EPA+DHA por dia.</li>
+                                    <li>Para suporte anti-inflamatório (exemplo: artrite): Doses mais altas, geralmente com maior proporção de EPA, podem ser usadas, conforme orientação profissional.</li>
+                                </ul>
+                            </li>
+                            <li>É crucial verificar a quantidade de EPA e DHA por cápsula no rótulo, não apenas o total de óleo de peixe.</li>
+                        </ul>
+
+                        <h4>Forma de Uso</h4>
+                        <ul>
+                            <li>Geralmente consumido <span class="emphasis-text">junto com as refeições</span> para melhorar a absorção (pois são gorduras) e minimizar possíveis desconfortos gastrointestinais, como sabor residual de peixe ("fishy burps").</li>
+                            <li>As cápsulas devem ser engolidas inteiras com água.</li>
+                            <li>Alguns produtos vêm com revestimento entérico para reduzir o refluxo.</li>
+                        </ul>
+
+                        <h4>Principais Alegações Aprovadas (ANVISA)</h4>
+                        <p>Alegações funcionais para EPA e DHA podem incluir:</p>
+                        <ul>
+                            <li>"O consumo de ácidos graxos ômega 3 EPA e DHA auxilia na manutenção de níveis saudáveis de triglicerídeos, desde que associado a uma alimentação equilibrada e hábitos de vida saudáveis."</li>
+                            <li>Alegações relacionadas à saúde cerebral e visual também podem ser permitidas dependendo da comprovação científica e da quantidade de DHA.</li>
+                        </ul>
+                        <p class="text-sm mt-2">(<a href="https://www.gov.br/anvisa/pt-br/assuntos/alimentos/suplementos-alimentares" target="_blank" rel="noopener noreferrer" class="anvisa-link">Consultar normativas da ANVISA</a>)</p>
+
+                        <h4>Mecanismo de Ação Simplificado</h4>
+                        <p>EPA e DHA são incorporados nas membranas celulares, influenciando sua fluidez e a função de proteínas de membrana. Eles são precursores de eicosanoides (como prostaglandinas e leucotrienos) que possuem propriedades anti-inflamatórias, contrapondo os efeitos de eicosanoides pró-inflamatórios derivados do ácido araquidônico (ômega-6). O DHA é um componente estrutural vital do cérebro e da retina. O ômega 3 também pode influenciar a expressão gênica, a função endotelial (saúde dos vasos sanguíneos) e o metabolismo lipídico (exemplo: redução da síntese de triglicerídeos no fígado).</p>
+                        
+                        <h4>Considerações ao Escolher um Produto Comercial</h4>
+                        <ul>
+                            <li><strong>Concentração de EPA e DHA:</strong> Verifique a quantidade específica de EPA e DHA por cápsula, não apenas o total de "óleo de peixe". Produtos mais concentrados permitem tomar menos cápsulas.</li>
+                            <li><strong>Pureza e Contaminantes:</strong> Procure por produtos que tenham certificações de terceiros (exemplo: IFOS - International Fish Oil Standards) atestando a pureza e a ausência de metais pesados (mercúrio, chumbo), PCBs e dioxinas.</li>
+                            <li><strong>Forma Molecular:</strong> Triglicerídeos (TG) são geralmente considerados mais bem absorvidos e mais estáveis que Etil Ésteres (EE). Alguns produtos de alta qualidade usam a forma de TG reesterificado.</li>
+                            <li><strong>Oxidação:</strong> Óleo de peixe é suscetível à oxidação. Verifique a data de validade e procure por produtos que contenham antioxidantes (como vitamina E). Armazene corretamente.</li>
+                            <li><strong>Fonte:</strong> Óleo de peixes pequenos (sardinha, anchova) tendem a ter menor acúmulo de contaminantes. Óleo de algas é uma excelente opção vegana.</li>
+                        </ul>
+
+                        <h4>Principais Benefícios e Evidências Científicas</h4>
+                        <ul>
+                            <li>Saúde cardiovascular: Redução de triglicerídeos (Evidência: Forte).</li>
+                            <li>Saúde cerebral: Importante para desenvolvimento e função (Evidência: Forte para DHA em desenvolvimento fetal/infantil).</li>
+                            <li>Ação anti-inflamatória (Evidência: Moderado a Forte, exemplo: artrite reumatoide).</li>
+                        </ul>
+                        <div class="disclaimer-box-strong mt-8">
+                            <p class="font-semibold text-lg">⚠️ Lembre-se Sempre:</p>
+                            <p>A suplementação deve ser individualizada. <strong>Converse com seu médico ou nutricionista</strong>.</p>
+                        </div>
+                    `
+                },
+                cafeina: {
+                    nome: "Cafeína",
+                    id: "cafeina",
+                    imagemPlaceholder: "https://placehold.co/600x400/fecdd3/be123c?text=Cafe%C3%ADna", 
+                    descricaoCard: "Estimulante para energia, foco, alerta e desempenho físico e mental.",
+                    categorias: ["Energia", "Foco", "Desempenho Físico"],
+                    htmlDetalhes: `
+                        <h3>O que é a Cafeína?</h3>
+                        <p>A cafeína é um estimulante do sistema nervoso central, pertencente ao grupo das metilxantinas, encontrada naturalmente em café, chá, cacau, guaraná e noz de cola.</p>
+
+                        <h4>Composição</h4>
+                        <ul>
+                            <li><strong>Ingrediente Ativo Principal:</strong> Cafeína (geralmente como cafeína anidra em suplementos, que é a cafeína desidratada em pó).</li>
+                            <li><strong>Fontes Naturais:</strong> Grãos de café, folhas de chá (Camellia sinensis), sementes de cacau, frutos do guaraná.</li>
+                            <li><strong>Excipientes Comuns (em suplementos em cápsula/comprimido):</strong> Celulose microcristalina (agente de volume), estearato de magnésio (lubrificante), dióxido de silício (antiumectante), material da cápsula (gelatina ou HPMC). <span class="emphasis-text">Verifique o rótulo.</span></li>
+                        </ul>
+
+                        <h4>Dose Recomendada</h4>
+                        <ul>
+                            <li><strong>Desempenho Físico e Cognitivo:</strong> Doses de <span class="emphasis-text">3-6 mg de cafeína por kg de peso corporal</span>, cerca de 30-60 minutos antes da atividade. Doses acima de 9 mg/kg não costumam trazer benefícios adicionais e aumentam o risco de efeitos colaterais.</li>
+                            <li><strong>Uso Geral (para alerta):</strong> 50-200 mg por dose.</li>
+                            <li><strong>Limite Diário Seguro (geralmente):</strong> Até 400 mg por dia para adultos saudáveis (incluindo todas as fontes: café, chá, suplementos, etc.).</li>
+                            <li>A ANVISA limita a quantidade de cafeína por porção em suplementos (geralmente até 210mg por dose, com recomendação máxima de 420mg/dia para adultos saudáveis, com intervalo entre doses).</li>
+                        </ul>
+
+                        <h4>Forma de Uso</h4>
+                        <ul>
+                            <li><strong>Suplementos (Cafeína Anidra):</strong> Geralmente em cápsulas ou comprimidos.</li>
+                            <li><strong>Bebidas:</strong> Café, chá, energéticos.</li>
+                            <li>Para efeitos ergogênicos, consumir <span class="emphasis-text">30-60 minutos antes do exercício</span>.</li>
+                            <li>Evitar o consumo próximo ao horário de dormir (pelo menos 6 horas antes) para não interferir no sono, pois a meia-vida da cafeína é de 3-7 horas em média.</li>
+                        </ul>
+
+                        <h4>Principais Alegações Aprovadas (ANVISA)</h4>
+                        <p>Para suplementos de cafeína, alegações permitidas podem incluir:</p>
+                        <ul>
+                            <li>"A cafeína auxilia no aumento do estado de alerta e na melhora da concentração."</li>
+                            <li>"A cafeína auxilia no aumento da capacidade de resistência e no desempenho de exercícios físicos de resistência."</li>
+                        </ul>
+                        <p class="text-sm mt-2">(<a href="https://www.gov.br/anvisa/pt-br/assuntos/alimentos/suplementos-alimentares" target="_blank" rel="noopener noreferrer" class="anvisa-link">Consultar normativas da ANVISA</a>)</p>
+
+                        <h4>Mecanismo de Ação Simplificado</h4>
+                        <p>A cafeína atua primariamente como um antagonista dos receptores de adenosina no cérebro. A adenosina é um neurotransmissor que promove sonolência e relaxamento. Ao bloquear a adenosina, a cafeína aumenta a atividade neural, levando à liberação de outros neurotransmissores como dopamina e norepinefrina. Isso resulta em aumento do alerta, redução da percepção de fadiga, melhora da concentração e, em doses adequadas, pode aumentar a contratilidade muscular e a mobilização de ácidos graxos como fonte de energia.</p>
+                        
+                        <h4>Considerações ao Escolher um Produto Comercial</h4>
+                        <ul>
+                            <li><strong>Forma:</strong> Cafeína anidra é a forma mais comum em suplementos.</li>
+                            <li><strong>Dosagem por Cápsula/Comprimido:</strong> Verifique se a dosagem é adequada para suas necessidades e tolerância. Comece com doses menores se for sensível.</li>
+                            <li><strong>Aditivos:</strong> Alguns produtos podem conter outros ingredientes (exemplo: L-teanina para modular os efeitos da cafeína). Avalie se são desejáveis.</li>
+                            <li><strong>Pureza:</strong> Escolha marcas com boa reputação.</li>
+                        </ul>
+
+                        <h4>Principais Benefícios e Evidências Científicas</h4>
+                        <ul>
+                            <li>Melhora do desempenho físico (endurance, força) (Evidência: Forte).</li>
+                            <li>Aumento do alerta, concentração e redução da fadiga (Evidência: Forte).</li>
+                            <li>Pode auxiliar na oxidação de gorduras (Evidência: Moderado).</li>
+                        </ul>
+                        <div class="disclaimer-box-strong mt-8">
+                            <p class="font-semibold text-lg">⚠️ Lembre-se Sempre:</p>
+                            <p>Use com responsabilidade. <strong>Consulte um profissional de saúde</strong> se tiver dúvidas.</p>
+                        </div>
+                    `
+                },
+                multivitaminas: {
+                    nome: "Multivitaminas e Minerais",
+                    id: "multivitaminas",
+                    imagemPlaceholder: "https://placehold.co/600x400/fecdd3/9f1239?text=Multivitaminas", 
+                    descricaoCard: "Combinação de vitaminas e minerais essenciais para complementar a dieta e apoiar a saúde geral.",
+                    categorias: ["Saúde Geral", "Vitaminas", "Minerais"],
+                    htmlDetalhes: `
+                        <h3>O que são Multivitaminas e Minerais?</h3>
+                        <p>Multivitaminas e minerais (também conhecidos como polivitamínicos) são suplementos alimentares que contêm uma combinação de diversas vitaminas e minerais essenciais, e por vezes outros nutrientes. O objetivo principal é fornecer esses micronutrientes para complementar a dieta, ajudando a prevenir ou corrigir deficiências nutricionais que podem ocorrer devido a uma alimentação inadequada, necessidades aumentadas (exemplo: gestação, atletas) ou problemas de absorção.</p>
+
+                        <h4>Composição</h4>
+                        <ul>
+                            <li><strong>Ingredientes Ativos Principais:</strong> Uma variedade de vitaminas (exemplo: A, C, D, E, K, complexo B - B1, B2, B3, B5, B6, B7, B9, B12) e minerais (exemplo: cálcio, magnésio, zinco, ferro, selênio, cromo, iodo, cobre, manganês).</li>
+                            <li>A quantidade e a combinação específica de vitaminas e minerais variam enormemente entre os diferentes produtos e marcas. Alguns são formulados para públicos específicos (exemplo: mulheres, homens, idosos, gestantes, atletas).</li>
+                            <li><strong>Excipientes Comuns:</strong> Agentes de volume (celulose microcristalina), estabilizantes, antiumectantes (dióxido de silício), lubrificantes (estearato de magnésio), corantes, revestimentos (para comprimidos), material da cápsula. <span class="emphasis-text">É fundamental verificar o rótulo do produto específico para a lista completa de ingredientes e suas quantidades.</span></li>
+                        </ul>
+
+                        <h4>Dose Recomendada</h4>
+                        <ul>
+                            <li>Geralmente, a dose recomendada é de <span class="emphasis-text">um comprimido ou cápsula por dia</span>, conforme indicado no rótulo do produto.</li>
+                            <li>As quantidades de cada vitamina e mineral em um multivitamínico são frequentemente baseadas nas Recomendações de Ingestão Diária (IDR) ou Valores Diários (%VD) estabelecidos por órgãos de saúde.</li>
+                            <li><span class="emphasis-text">É crucial não exceder a dose recomendada</span>, pois o consumo excessivo de certas vitaminas (especialmente as lipossolúveis como A, D, E, K) e minerais pode ser tóxico.</li>
+                            <li>A necessidade de suplementação deve ser avaliada individualmente, preferencialmente com orientação de um médico ou nutricionista, que pode solicitar exames para identificar deficiências específicas.</li>
+                        </ul>
+
+                        <h4>Forma de Uso</h4>
+                        <ul>
+                            <li>A maioria dos multivitamínicos é melhor absorvida quando tomada <span class="emphasis-text">junto com uma refeição</span> que contenha alguma gordura, pois isso auxilia na absorção das vitaminas lipossolúveis.</li>
+                            <li>Tomar no mesmo horário todos os dias pode ajudar a criar um hábito e manter níveis mais estáveis.</li>
+                            <li>Evitar tomar com certos medicamentos que podem interferir na absorção (exemplo: alguns antibióticos com minerais como cálcio e ferro). Consulte a bula do medicamento e um profissional de saúde.</li>
+                        </ul>
+
+                        <h4>Principais Alegações Aprovadas (ANVISA)</h4>
+                        <p>As alegações permitidas para vitaminas e minerais em suplementos são geralmente relacionadas à sua função essencial no organismo e à prevenção de deficiências. Exemplos genéricos (a alegação exata depende da vitamina/mineral e da dose):</p>
+                        <ul>
+                            <li>"A Vitamina C auxilia no funcionamento do sistema imune."</li>
+                            <li>"O Zinco contribui para a manutenção do cabelo, da pele e das unhas."</li>
+                            <li>"O Ferro auxilia na formação das células vermelhas do sangue."</li>
+                            <li>"O Cálcio auxilia na formação e manutenção de ossos e dentes."</li>
+                        </ul>
+                        <p class="text-sm mt-2">A ANVISA possui uma lista de alegações autorizadas para nutrientes específicos. Multivitamínicos não podem alegar cura, tratamento ou prevenção de doenças específicas, apenas o suporte às funções normais do organismo. (<a href="https://www.gov.br/anvisa/pt-br/assuntos/alimentos/suplementos-alimentares" target="_blank" rel="noopener noreferrer" class="anvisa-link">Consultar normativas da ANVISA</a>)</p>
+
+                        <h4>Mecanismo de Ação Simplificado</h4>
+                        <p>As vitaminas e minerais são micronutrientes essenciais que desempenham papéis vitais em inúmeros processos bioquímicos e fisiológicos no corpo. Eles atuam como cofatores para enzimas, componentes estruturais de tecidos, antioxidantes, hormônios, entre outras funções. Um multivitamínico visa fornecer uma gama desses nutrientes para garantir que o corpo tenha os "blocos de construção" e "facilitadores" necessários para manter o metabolismo, crescimento, reparo celular, função imunológica e saúde geral em bom funcionamento, especialmente quando a dieta não é suficiente.</p>
+                        
+                        <h4>Considerações ao Escolher um Produto Comercial</h4>
+                        <ul>
+                            <li><strong>Formulação Específica:</strong> Considere se precisa de uma fórmula geral ou uma específica para seu gênero, idade ou necessidade (exemplo: pré-natal, sênior).</li>
+                            <li><strong>Dosagens:</strong> Compare as dosagens dos nutrientes com as Recomendações de Ingestão Diária (IDR). Evite produtos com megadoses de vitaminas lipossolúveis, a menos que recomendado por um profissional.</li>
+                            <li><strong>Forma dos Nutrientes:</strong> Algumas formas de minerais são mais biodisponíveis (melhor absorvidas) que outras (exemplo: citrato de magnésio vs. óxido de magnésio).</li>
+                            <li><strong>Aditivos:</strong> Verifique a lista de excipientes se você tiver sensibilidades ou alergias.</li>
+                            <li><strong>Certificações de Qualidade:</strong> Selos de terceiros (exemplo: USP, NSF) podem indicar boas práticas de fabricação e qualidade do produto, embora não sejam obrigatórios.</li>
+                        </ul>
+
+                        <h4>Quando a Suplementação Pode Ser Considerada?</h4>
+                        <ul>
+                            <li>Dietas restritivas (vegetarianas/veganas mal planejadas, dietas de muito baixa caloria).</li>
+                            <li>Necessidades aumentadas (gestação, lactação, atletas de alto rendimento, idosos).</li>
+                            <li>Condições médicas que afetam a absorção de nutrientes (doença celíaca, doença de Crohn, cirurgia bariátrica).</li>
+                            <li>Uso de certos medicamentos que depletam nutrientes.</li>
+                            <li>Identificação de deficiências específicas por exames laboratoriais.</li>
+                        </ul>
+                        <p><span class="emphasis-text">Importante:</span> Multivitamínicos não substituem uma dieta equilibrada e saudável. O foco deve ser sempre obter nutrientes através dos alimentos.</p>
+
+                        <h4>Status Regulatório (ANVISA)</h4>
+                        <p>Multivitaminas e minerais são regulamentados pela ANVISA como suplementos alimentares. Devem seguir limites máximos e mínimos para cada nutriente por porção, além de requisitos de rotulagem e boas práticas de fabricação.</p>
+
+                        <h4>Possíveis Efeitos Colaterais e Segurança</h4>
+                        <ul>
+                            <li>Geralmente bem tolerados quando usados nas doses recomendadas.</li>
+                            <li>Efeitos colaterais comuns podem incluir desconforto gastrointestinal leve (náusea, constipação, diarreia), especialmente com suplementos contendo ferro. Tomar com alimentos pode minimizar.</li>
+                            <li><span class="emphasis-text">Hipervitaminose:</span> O consumo excessivo de certas vitaminas (especialmente A, D, E, K) e minerais (ferro, zinco, selênio) pode levar à toxicidade e efeitos adversos graves. Siga sempre a dose do rótulo ou a orientação profissional.</li>
+                            <li>Alguns indivíduos podem ter alergia ou sensibilidade a certos ingredientes ou excipientes.</li>
+                        </ul>
+
+                        <h4>Interações</h4>
+                        <ul>
+                            <li><strong>Medicamentos:</strong> Várias interações são possíveis. Por exemplo:
+                                <ul>
+                                    <li>Minerais como cálcio, ferro, magnésio e zinco podem reduzir a absorção de certos antibióticos (tetraciclinas, quinolonas) e medicamentos para tireoide (levotiroxina). Recomenda-se espaçar as doses.</li>
+                                    <li>Vitamina K pode interferir com anticoagulantes como a varfarina.</li>
+                                    <li>Altas doses de Vitamina E podem aumentar o risco de sangramento em quem usa anticoagulantes.</li>
+                                </ul>
+                            </li>
+                            <li><strong>Outros Suplementos:</strong> O consumo concomitante de múltiplos suplementos contendo os mesmos nutrientes pode levar a uma ingestão excessiva.</li>
+                        </ul>
+                        <p class="mt-2"><span class="emphasis-text">Sempre informe seu médico e farmacêutico sobre todos os suplementos que você utiliza.</span></p>
+
+                        <div class="disclaimer-box-strong mt-8">
+                            <p class="font-semibold text-lg">⚠️ Lembre-se Sempre:</p>
+                            <p>A necessidade de um multivitamínico é individual. Uma dieta variada e equilibrada é a melhor fonte de nutrientes. <strong>Consulte um médico ou nutricionista</strong> para determinar se a suplementação é apropriada para você e qual o produto mais adequado.</p>
+                        </div>
+                    `
+                },
+                probioticos: {
+                    nome: "Probióticos",
+                    id: "probioticos",
+                    imagemPlaceholder: "https://placehold.co/600x400/fbcfe8/c53030?text=Probi%C3%B3ticos", 
+                    descricaoCard: "Microrganismos vivos que, administrados em quantidades adequadas, conferem benefício à saúde do hospedeiro, principalmente equilibrando a flora intestinal.",
+                    categorias: ["Saúde Intestinal", "Imunidade"],
+                    htmlDetalhes: `
+                        <h3>O que são Probióticos?</h3>
+                        <p>Probióticos são microrganismos vivos (principalmente bactérias e algumas leveduras) que, quando administrados em quantidades adequadas, conferem um benefício à saúde do hospedeiro. Eles são frequentemente chamados de "bactérias boas" ou "amigáveis" e atuam principalmente no trato gastrointestinal, ajudando a equilibrar a microbiota intestinal (flora intestinal).</p>
+                        
+                        <h4>Composição</h4>
+                        <ul>
+                            <li><strong>Ingredientes Ativos Principais:</strong> Cepas específicas de bactérias (exemplo: espécies de <i>Lactobacillus</i> como <i>L. rhamnosus GG</i>, <i>L. acidophilus</i>; espécies de <i>Bifidobacterium</i> como <i>B. lactis</i>, <i>B. longum</i>) e/ou leveduras (exemplo: <i>Saccharomyces boulardii</i>).</li>
+                            <li>A eficácia dos probióticos é <span class="emphasis-text">cepa-específica</span>, o que significa que diferentes cepas podem ter diferentes efeitos na saúde.</li>
+                            <li>A quantidade é expressa em Unidades Formadoras de Colônias (UFC), geralmente na casa dos bilhões por dose.</li>
+                            <li><strong>Excipientes Comuns:</strong> Agentes de enchimento (maltodextrina, celulose microcristalina), prebióticos (frutooligossacarídeos - FOS, inulina - que servem de "alimento" para os probióticos), material da cápsula (gelatina, HPMC), antiumectantes. <span class="emphasis-text">Verifique o rótulo.</span></li>
+                        </ul>
+
+                        <h4>Dose Recomendada</h4>
+                        <ul>
+                            <li>Varia amplamente dependendo da(s) cepa(s) específica(s) e da condição que se pretende tratar ou prevenir.</li>
+                            <li>Doses comuns variam de <span class="emphasis-text">1 bilhão a 50 bilhões de UFC por dia</span>, ou mais em alguns casos.</li>
+                            <li>Siga a recomendação do fabricante ou a orientação de um profissional de saúde.</li>
+                        </ul>
+
+                        <h4>Forma de Uso</h4>
+                        <ul>
+                            <li>Muitos probióticos são melhor tomados <span class="emphasis-text">com o estômago vazio ou um pouco antes das refeições</span> para minimizar a exposição ao ácido gástrico. No entanto, alguns produtos são formulados para serem tomados com alimentos. Verifique as instruções do produto.</li>
+                            <li>Cápsulas com revestimento entérico podem proteger os microrganismos do ácido estomacal.</li>
+                            <li>Alguns probióticos requerem refrigeração para manter a viabilidade das cepas, enquanto outros são estáveis à temperatura ambiente. Verifique as condições de armazenamento.</li>
+                        </ul>
+
+                        <h4>Principais Alegações Aprovadas (ANVISA)</h4>
+                        <p>Alegações para probióticos são específicas para as cepas com eficácia comprovada e podem incluir:</p>
+                        <ul>
+                            <li>"O [Nome da Cepa Probiótica] contribui para o equilíbrio da flora intestinal."</li>
+                            <li>"Seu consumo deve estar associado a uma alimentação equilibrada e hábitos de vida saudáveis."</li>
+                        </ul>
+                        <p class="text-sm mt-2">Alegações mais específicas sobre tratamento de diarreia, síndrome do intestino irritável, etc., requerem comprovação robusta para cada cepa. (<a href="https://www.gov.br/anvisa/pt-br/assuntos/alimentos/suplementos-alimentares" target="_blank" rel="noopener noreferrer" class="anvisa-link">Consultar normativas da ANVISA</a>)</p>
+
+                        <h4>Mecanismo de Ação Simplificado</h4>
+                        <p>Os probióticos atuam de diversas formas: competem com microrganismos patogênicos por nutrientes e sítios de adesão na mucosa intestinal; produzem substâncias antimicrobianas (bacteriocinas); modulam o sistema imunológico local e sistêmico; melhoram a função de barreira do intestino; e podem influenciar o metabolismo e a produção de neurotransmissores (eixo intestino-cérebro).</p>
+                        
+                        <h4>Considerações ao Escolher um Produto Comercial</h4>
+                        <ul>
+                            <li><strong>Cepas Específicas:</strong> Pesquise quais cepas têm evidência para o benefício desejado. Não assuma que todos os probióticos são iguais.</li>
+                            <li><strong>Contagem de UFC:</strong> Verifique a quantidade de UFC por dose e se é garantida até o final da validade (não apenas no momento da fabricação).</li>
+                            <li><strong>Viabilidade e Estabilidade:</strong> Prefira produtos de marcas com boas práticas de fabricação que garantam a viabilidade dos microrganismos. Embalagens que protegem da umidade e luz são importantes.</li>
+                            <li><strong>Requisitos de Armazenamento:</strong> Atente-se se o produto precisa de refrigeração. Probióticos liofilizados em cápsulas ou sachês costumam ser mais estáveis à temperatura ambiente.</li>
+                            <li><strong>Combinação de Cepas vs. Cepa Única:</strong> Alguns produtos combinam múltiplas cepas, outros focam em uma. A melhor escolha depende do objetivo e da evidência científica para as cepas em questão.</li>
+                            <li><strong>Presença de Prebióticos:</strong> Alguns suplementos são simbióticos, contendo tanto probióticos quanto prebióticos (FOS, inulina), que podem ajudar no crescimento das bactérias benéficas.</li>
+                        </ul>
+                        
+                        <h4>Principais Benefícios e Evidências Científicas</h4>
+                        <ul>
+                            <li>Manutenção da saúde intestinal e equilíbrio da microbiota (Evidência: Forte para cepas específicas).</li>
+                            <li>Prevenção e tratamento de diarreia associada a antibióticos e diarreia infecciosa (Evidência: Forte para cepas como <i>L. rhamnosus GG</i>, <i>S. boulardii</i>).</li>
+                            <li>Alívio de sintomas da Síndrome do Intestino Irritável (SII) (Evidência: Moderado, cepa-específico).</li>
+                            <li>Suporte ao sistema imunológico (Evidência: Moderado, cepa-específico).</li>
+                            <li>Pode ter benefícios para saúde vaginal, alergias, saúde mental (eixo intestino-cérebro) - áreas de pesquisa ativa.</li>
+                        </ul>
+                        <div class="disclaimer-box-strong mt-8">
+                            <p class="font-semibold text-lg">⚠️ Lembre-se Sempre:</p>
+                            <p>A escolha e o uso de probióticos devem ser individualizados. <strong>Consulte um médico ou nutricionista</strong>, especialmente se tiver condições de saúde preexistentes ou sistema imunológico comprometido.</p>
+                        </div>
+                    `
+                },
+                fibras: {
+                    nome: "Fibras Dietéticas",
+                    id: "fibras",
+                    imagemPlaceholder: "https://placehold.co/600x400/fee2e2/dc2626?text=Fibras+Diet%C3%A9ticas", 
+                    descricaoCard: "Componentes de alimentos vegetais não digeríveis que promovem a saúde digestiva, saciedade e controle glicêmico.",
+                    categorias: ["Saúde Intestinal", "Saciedade", "Controle Glicêmico"],
+                    htmlDetalhes: `
+                        <h3>O que são Fibras Dietéticas?</h3>
+                        <p>Fibras dietéticas são partes de alimentos de origem vegetal que o corpo não consegue digerir ou absorver no intestino delgado. Elas passam relativamente intactas para o intestino grosso, onde podem ser fermentadas pelas bactérias intestinais. São classificadas principalmente em solúveis e insolúveis.</p>
+                        
+                        <h4>Composição</h4>
+                        <ul>
+                            <li><strong>Ingredientes Ativos Principais:</strong>
+                                <ul>
+                                    <li><strong>Fibras Solúveis:</strong> Dissolvem-se em água formando um gel. Exemplos: Pectinas (frutas), Gomas (goma guar, goma acácia), Beta-glucanas (aveia, cevada), Psyllium (casca da semente de <i>Plantago ovata</i>), Inulina e Frutooligossacarídeos (FOS) (chicória, alho, cebola, banana).</li>
+                                    <li><strong>Fibras Insolúveis:</strong> Não se dissolvem em água. Aumentam o volume das fezes. Exemplos: Celulose (farelo de trigo, vegetais folhosos, cascas de frutas), Hemicelulose, Lignina (grãos integrais, sementes).</li>
+                                </ul>
+                            </li>
+                            <li>Suplementos de fibras podem conter uma única fonte de fibra (exemplo: apenas psyllium) ou uma mistura de diferentes tipos.</li>
+                            <li><strong>Excipientes Comuns:</strong> Em suplementos em pó, podem ser puros ou ter adoçantes, aromatizantes, corantes. Em cápsulas ou comprimidos, os excipientes usuais para formação. <span class="emphasis-text">Verifique o rótulo.</span></li>
+                        </ul>
+
+                        <h4>Dose Recomendada</h4>
+                        <ul>
+                            <li>A recomendação geral de ingestão de fibras para adultos é de <span class="emphasis-text">25-38 gramas por dia</span> (mulheres e homens, respectivamente), provenientes de alimentos como frutas, vegetais, legumes, nozes, sementes e grãos integrais.</li>
+                            <li>Suplementos de fibras podem ser usados para complementar a ingestão dietética, geralmente em doses de <span class="emphasis-text">5-15 gramas por dia</span>, divididas se necessário.</li>
+                            <li><span class="emphasis-text">Aumente a ingestão de fibras gradualmente</span> ao longo de alguns dias ou semanas para permitir que o sistema digestivo se adapte e para evitar desconforto gastrointestinal como gases e inchaço.</li>
+                            <li>É fundamental <span class="emphasis-text">aumentar a ingestão de água</span> concomitantemente ao aumento da ingestão de fibras.</li>
+                        </ul>
+
+                        <h4>Forma de Uso</h4>
+                        <ul>
+                            <li>Suplementos em pó devem ser misturados com uma quantidade adequada de líquido (pelo menos 240 ml de água, suco ou outra bebida por dose de 5-7g de fibra) e consumidos imediatamente para evitar que engrossem demais.</li>
+                            <li>Cápsulas ou comprimidos devem ser tomados com um copo cheio de água.</li>
+                            <li>É crucial <span class="emphasis-text">beber bastante água ao longo do dia</span> ao suplementar com fibras para garantir sua eficácia e evitar constipação ou, em casos raros, obstrução intestinal.</li>
+                            <li>Algumas fibras (exemplo: psyllium, goma guar) podem interferir na absorção de certos medicamentos. Recomenda-se tomar suplementos de fibra pelo menos 1-2 horas antes ou 2-4 horas depois de medicamentos orais.</li>
+                        </ul>
+
+                        <h4>Principais Alegações Aprovadas (ANVISA)</h4>
+                        <p>Alegações para fibras dependem do tipo específico e da comprovação científica:</p>
+                        <ul>
+                            <li>"As fibras alimentares auxiliam o funcionamento do intestino." (Alegação genérica comum)</li>
+                            <li>Algumas fibras específicas (exemplo: beta-glucanas da aveia, psyllium) podem ter alegações aprovadas sobre auxílio na redução da absorção de colesterol ou melhora do controle glicêmico, quando associadas a uma dieta equilibrada e hábitos de vida saudáveis.</li>
+                        </ul>
+                        <p class="text-sm mt-2">(<a href="https://www.gov.br/anvisa/pt-br/assuntos/alimentos/suplementos-alimentares" target="_blank" rel="noopener noreferrer" class="anvisa-link">Consultar normativas da ANVISA</a>)</p>
+
+                        <h4>Mecanismo de Ação Simplificado</h4>
+                        <ul>
+                            <li><strong>Fibras Solúveis:</strong> Formam um gel viscoso no trato digestivo. Isso pode retardar o esvaziamento gástrico, promovendo saciedade; ligar-se a ácidos biliares (auxiliando na redução do colesterol); e atenuar a absorção de glicose. São fermentadas pelas bactérias no cólon, produzindo ácidos graxos de cadeia curta (AGCC) como butirato, que são benéficos para a saúde do cólon e podem ter efeitos sistêmicos.</li>
+                            <li><strong>Fibras Insolúveis:</strong> Aumentam o volume e a maciez das fezes, pois absorvem água. Isso acelera o trânsito intestinal, ajudando a prevenir a constipação e a manter a regularidade.</li>
+                        </ul>
+                        
+                        <h4>Considerações ao Escolher um Produto Comercial</h4>
+                        <ul>
+                            <li><strong>Tipo de Fibra:</strong> Escolha com base no seu objetivo principal. Psyllium é bom para regularidade e pode ajudar no colesterol. Inulina e FOS são prebióticos que alimentam bactérias benéficas. Goma guar pode ajudar na saciedade.</li>
+                            <li><strong>Solubilidade e Fermentabilidade:</strong> Fibras solúveis e fermentáveis podem causar mais gases inicialmente. Fibras insolúveis são menos fermentáveis.</li>
+                            <li><strong>Aditivos:</strong> Alguns suplementos em pó podem conter açúcares, adoçantes artificiais ou corantes. Prefira opções mais puras se possível, especialmente se for usar a longo prazo.</li>
+                            <li><strong>Forma de Apresentação:</strong> Pó, cápsulas, comprimidos, gomas. O pó geralmente permite doses maiores e é mais versátil para adicionar a alimentos ou bebidas.</li>
+                            <li><strong>Instruções de Uso:</strong> Siga as instruções do fabricante, especialmente em relação à quantidade de líquido a ser consumida.</li>
+                        </ul>
+
+                        <h4>Principais Benefícios e Evidências Científicas</h4>
+                        <ul>
+                            <li>Melhora da regularidade intestinal e prevenção/alívio da constipação (Evidência: Forte).</li>
+                            <li>Aumento da saciedade e auxílio no controle de peso (Evidência: Moderado a Forte).</li>
+                            <li>Auxílio no controle dos níveis de colesterol sanguíneo (especialmente fibras solúveis viscosas - Evidência: Forte).</li>
+                            <li>Melhora do controle glicêmico em indivíduos com diabetes tipo 2 (Evidência: Moderado a Forte).</li>
+                            <li>Saúde da microbiota intestinal (fibras fermentáveis atuam como prebióticos, alimentando bactérias benéficas - Evidência: Forte).</li>
+                            <li>Pode reduzir o risco de doenças diverticulares e hemorroidas.</li>
+                        </ul>
+                        <div class="disclaimer-box-strong mt-8">
+                            <p class="font-semibold text-lg">⚠️ Lembre-se Sempre:</p>
+                            <p>A melhor fonte de fibras é uma dieta rica em frutas, vegetais, legumes e grãos integrais. Suplementos são um complemento. <strong>Beba muita água e aumente a ingestão de fibras gradualmente. Consulte um profissional de saúde</strong> se tiver condições digestivas preexistentes.</p>
+                        </div>
+                    `
+                },
+                colageno: {
+                    nome: "Colágeno",
+                    id: "colageno",
+                    imagemPlaceholder: "https://placehold.co/600x400/ffe4e6/be123c?text=Col%C3%A1geno", 
+                    descricaoCard: "Proteína estrutural importante para pele, articulações, ossos e tecidos conjuntivos. Suplementos visam repor ou estimular sua produção.",
+                    categorias: ["Pele e Beleza", "Articulações", "Proteínas"],
+                    htmlDetalhes: `
+                        <h3>O que é o Colágeno?</h3>
+                        <p>O colágeno é a proteína mais abundante no corpo humano, sendo um componente fundamental da pele, ossos, cartilagens, tendões, ligamentos e outros tecidos conjuntivos. Ele confere estrutura, firmeza e elasticidade a esses tecidos. Existem diversos tipos de colágeno (mais de 28 identificados), sendo os Tipos I, II e III os mais comuns no organismo e em suplementos.</p>
+                        
+                        <h4>Composição</h4>
+                        <ul>
+                            <li><strong>Ingredientes Ativos Principais:</strong>
+                                <ul>
+                                    <li><strong>Colágeno Hidrolisado (ou Peptídeos de Colágeno):</strong> É o colágeno que passou por um processo de hidrólise enzimática, quebrando suas longas cadeias proteicas em fragmentos menores (peptídeos). Isso facilita a digestão e absorção. Geralmente derivado de fontes bovinas, suínas ou marinhas. Rico em aminoácidos como glicina, prolina e hidroxiprolina. Principalmente Tipo I e III.</li>
+                                    <li><strong>Colágeno Tipo II Não Desnaturado (UC-II® ou similar):</strong> Extraído da cartilagem do esterno de frango, mantendo sua estrutura tridimensional original. Atua de forma diferente do hidrolisado, principalmente através da modulação da resposta imune nas articulações.</li>
+                                </ul>
+                            </li>
+                            <li><strong>Excipientes Comuns:</strong> Em pó: pode ser puro ou conter aromatizantes, adoçantes, vitaminas (como Vitamina C, que auxilia na formação do colágeno), minerais (zinco, silício). Em cápsulas: excipientes usuais. <span class="emphasis-text">Verifique o rótulo.</span></li>
+                        </ul>
+
+                        <h4>Dose Recomendada</h4>
+                        <ul>
+                            <li><strong>Colágeno Hidrolisado (Peptídeos):</strong> Doses de <span class="emphasis-text">2.5 a 15 gramas por dia</span> têm sido estudadas para diferentes finalidades (pele, articulações, ossos). Doses de 5-10g/dia são comuns.</li>
+                            <li><strong>Colágeno Tipo II Não Desnaturado:</strong> A dose é muito menor, geralmente <span class="emphasis-text">40 mg por dia</span>.</li>
+                        </ul>
+
+                        <h4>Forma de Uso</h4>
+                        <ul>
+                            <li><strong>Colágeno Hidrolisado:</strong> Pó para ser dissolvido em água, sucos, vitaminas ou outras bebidas. Pode ser consumido em qualquer horário. Alguns estudos sugerem que a presença de Vitamina C pode otimizar sua síntese.</li>
+                            <li><strong>Colágeno Tipo II Não Desnaturado:</strong> Geralmente em cápsulas pequenas, tomadas uma vez ao dia, preferencialmente em jejum para otimizar seu mecanismo de ação imunomodulador.</li>
+                        </ul>
+
+                        <h4>Principais Alegações Aprovadas (ANVISA)</h4>
+                        <p>Alegações para colágeno podem incluir:</p>
+                        <ul>
+                            <li>"O colágeno auxilia na manutenção da saúde da pele." (Para peptídeos bioativos específicos com comprovação)</li>
+                            <li>"A vitamina C auxilia na formação do colágeno." (Quando presente na formulação)</li>
+                            <li>Para Colágeno Tipo II Não Desnaturado: "O colágeno tipo II não desnaturado auxilia na manutenção da função articular."</li>
+                        </ul>
+                        <p class="text-sm mt-2">(<a href="https://www.gov.br/anvisa/pt-br/assuntos/alimentos/suplementos-alimentares" target="_blank" rel="noopener noreferrer" class="anvisa-link">Consultar normativas da ANVISA</a>)</p>
+
+                        <h4>Mecanismo de Ação Simplificado</h4>
+                        <ul>
+                            <li><strong>Colágeno Hidrolisado:</strong> Fornece aminoácidos e peptídeos que são absorvidos e podem ser utilizados pelo corpo como "blocos de construção" para a síntese de novo colágeno em diversos tecidos. Alguns peptídeos específicos podem também estimular os fibroblastos (células que produzem colágeno) e outras células.</li>
+                            <li><strong>Colágeno Tipo II Não Desnaturado:</strong> Acredita-se que atue através de um mecanismo chamado "tolerância oral". Pequenas quantidades de colágeno tipo II intacto, ao passarem pelas placas de Peyer no intestino, podem interagir com o sistema imunológico, dessensibilizando-o e reduzindo a resposta inflamatória autoimune que degrada a cartilagem articular em condições como a osteoartrite.</li>
+                        </ul>
+                        
+                        <h4>Considerações ao Escolher um Produto Comercial</h4>
+                        <ul>
+                            <li><strong>Tipo de Colágeno:</strong> Escolha com base no seu objetivo (Hidrolisado para pele/geral, Tipo II para articulações).</li>
+                            <li><strong>Peptídeos Bioativos:</strong> Alguns colágenos hidrolisados são processados para conter peptídeos bioativos específicos com maior afinidade por certos tecidos (exemplo: Verisol® para pele, Fortigel® para cartilagem). Verifique se o produto especifica o tipo de peptídeo e se há estudos que o respaldem.</li>
+                            <li><strong>Fonte:</strong> Bovina, suína, marinha. Considere alergias ou restrições alimentares (exemplo: colágeno marinho para quem não consome carne vermelha/suína).</li>
+                            <li><strong>Aditivos e Outros Nutrientes:</strong> Verifique se há adição de vitaminas (C, E), minerais (zinco, silício) ou ácido hialurônico, que podem complementar os efeitos. Evite excesso de açúcares ou adoçantes artificiais se preferir.</li>
+                            <li><strong>Sabor e Solubilidade (para pó):</strong> Alguns produtos podem ter sabor residual. Opções neutras são mais versáteis.</li>
+                        </ul>
+
+                        <h4>Principais Benefícios e Evidências Científicas</h4>
+                        <ul>
+                            <li>Melhora da elasticidade e hidratação da pele, redução de rugas finas (Colágeno Hidrolisado/Peptídeos - Evidência: Moderado a Forte).</li>
+                            <li>Alívio da dor e melhora da função articular em osteoartrite (Colágeno Tipo II Não Desnaturado - Evidência: Moderado; Colágeno Hidrolisado - Evidência: Moderado).</li>
+                            <li>Pode auxiliar na saúde óssea e fortalecimento de unhas e cabelos (Evidência: Limitado a Moderado).</li>
+                        </ul>
+                        <div class="disclaimer-box-strong mt-8">
+                            <p class="font-semibold text-lg">⚠️ Lembre-se Sempre:</p>
+                            <p>Os resultados podem variar. <strong>Consulte um profissional de saúde</strong> para orientação sobre o tipo e dose de colágeno mais adequados para você.</p>
+                        </div>
+                    `
+                },
+                vitaminaD: {
+                    nome: "Vitamina D",
+                    id: "vitaminaD",
+                    imagemPlaceholder: "https://placehold.co/600x400/ffe4b5/dc2626?text=Vitamina+D", 
+                    descricaoCard: "Vitamina lipossolúvel crucial para a saúde óssea, imunidade e diversas funções celulares. Obtida pela exposição solar e dieta/suplementação.",
+                    categorias: ["Saúde Óssea", "Imunidade", "Vitaminas"],
+                    htmlDetalhes: `
+                        <h3>O que é a Vitamina D?</h3>
+                        <p>A Vitamina D é uma vitamina lipossolúvel que funciona como um pró-hormônio no corpo. Existem duas formas principais: Vitamina D2 (ergocalciferol), encontrada em algumas plantas e fungos, e Vitamina D3 (colecalciferol), produzida na pele humana após exposição à luz solar UVB e encontrada em alimentos de origem animal (peixes gordos, gema de ovo, fígado). A Vitamina D3 é geralmente considerada mais eficaz em elevar e manter os níveis sanguíneos de Vitamina D.</p>
+                        
+                        <h4>Composição</h4>
+                        <ul>
+                            <li><strong>Ingrediente Ativo Principal:</strong> Colecalciferol (Vitamina D3) ou Ergocalciferol (Vitamina D2). A D3 é mais comum e geralmente preferida em suplementos.</li>
+                            <li>A dosagem é expressa em Unidades Internacionais (UI) ou microgramas (mcg). 1 mcg = 40 UI.</li>
+                            <li><strong>Excipientes Comuns:</strong> Em cápsulas gelatinosas moles (softgels): óleo veículo (exemplo: óleo de soja, azeite de oliva, óleo de girassol) para auxiliar na absorção, material da cápsula. Em gotas: óleo veículo. Em comprimidos: agentes de volume, etc. <span class="emphasis-text">Verifique o rótulo.</span></li>
+                        </ul>
+
+                        <h4>Dose Recomendada</h4>
+                        <ul>
+                            <li>As Recomendações de Ingestão Diária (IDR) variam com a idade, sexo e condições específicas (exemplo: gestação). Para adultos, geralmente entre <span class="emphasis-text">600-800 UI (15-20 mcg) por dia</span>. Idosos podem precisar de doses maiores.</li>
+                            <li>Para corrigir deficiências, doses muito mais altas podem ser prescritas por um médico, baseadas em exames de sangue (25-hidroxivitamina D).</li>
+                            <li>A ANVISA estabelece limites para suplementos. Doses de até 2.000 UI/dia são comuns em suplementos de venda livre, mas doses maiores requerem prescrição ou indicação profissional específica.</li>
+                            <li><span class="emphasis-text">A suplementação deve ser individualizada</span> e, idealmente, monitorada.</li>
+                        </ul>
+
+                        <h4>Forma de Uso</h4>
+                        <ul>
+                            <li>Como é lipossolúvel, a Vitamina D é melhor absorvida quando tomada <span class="emphasis-text">junto com uma refeição que contenha gorduras</span>.</li>
+                            <li>Pode ser tomada em qualquer horário do dia.</li>
+                            <li>Disponível em gotas, cápsulas gelatinosas, comprimidos.</li>
+                        </ul>
+
+                        <h4>Principais Alegações Aprovadas (ANVISA)</h4>
+                        <p>Alegações para Vitamina D podem incluir:</p>
+                        <ul>
+                            <li>"A vitamina D auxilia na formação de ossos e dentes."</li>
+                            <li>"A vitamina D auxilia na absorção de cálcio e fósforo."</li>
+                            <li>"A vitamina D auxilia no funcionamento do sistema imune."</li>
+                            <li>"A vitamina D auxilia no funcionamento muscular."</li>
+                        </ul>
+                        <p class="text-sm mt-2">(<a href="https://www.gov.br/anvisa/pt-br/assuntos/alimentos/suplementos-alimentares" target="_blank" rel="noopener noreferrer" class="anvisa-link">Consultar normativas da ANVISA</a>)</p>
+
+                        <h4>Mecanismo de Ação Simplificado</h4>
+                        <p>A Vitamina D (após conversão no fígado e rins para sua forma ativa, calcitriol) liga-se a receptores nucleares (VDR) presentes em diversas células do corpo. Seu papel mais conhecido é regular o metabolismo do cálcio e do fósforo, aumentando sua absorção intestinal e promovendo a mineralização óssea. Além disso, a Vitamina D modula a função imunológica (tanto inata quanto adaptativa), a proliferação e diferenciação celular, e tem efeitos anti-inflamatórios.</p>
+                        
+                        <h4>Considerações ao Escolher um Produto Comercial</h4>
+                        <ul>
+                            <li><strong>Forma:</strong> Vitamina D3 (colecalciferol) é geralmente preferida por sua maior eficácia em elevar os níveis sanguíneos.</li>
+                            <li><strong>Dosagem:</strong> Escolha uma dosagem apropriada para suas necessidades (preventiva ou para corrigir deficiência, conforme orientação profissional). Para suplementação diária sem deficiência conhecida, doses entre 600-2000 UI são comuns.</li>
+                            <li><strong>Veículo (para gotas ou softgels):</strong> Alguns óleos podem ser preferíveis dependendo de alergias ou preferências (exemplo: azeite de oliva extra virgem, TCM - triglicerídeos de cadeia média).</li>
+                            <li><strong>Certificações de Qualidade:</strong> Embora não obrigatórias, certificações de terceiros podem oferecer maior confiança na dosagem e pureza.</li>
+                            <li><strong>Ausência de Alérgenos:</strong> Se tiver alergias, verifique a lista de excipientes.</li>
+                        </ul>
+
+                        <h4>Principais Benefícios e Evidências Científicas</h4>
+                        <ul>
+                            <li>Saúde Óssea: Prevenção de raquitismo (crianças) e osteomalácia (adultos), auxílio na prevenção e tratamento da osteoporose (Evidência: Forte).</li>
+                            <li>Função Imunológica: Modulação da resposta imune, podendo reduzir o risco de infecções respiratórias (Evidência: Moderado, especialmente em deficientes).</li>
+                            <li>Função Muscular: Pode melhorar a força muscular e reduzir o risco de quedas em idosos (Evidência: Moderado).</li>
+                            <li>Pesquisas em andamento sobre seu papel em doenças autoimunes, cardiovasculares, câncer e saúde mental.</li>
+                        </ul>
+                        <div class="disclaimer-box-strong mt-8">
+                            <p class="font-semibold text-lg">⚠️ Lembre-se Sempre:</p>
+                            <p>A principal fonte de Vitamina D é a exposição solar adequada (cerca de 15-20 minutos nos braços e pernas, sem protetor, nos horários de sol mais forte, algumas vezes por semana). A suplementação é importante em casos de deficiência ou baixa exposição. <strong>Consulte um médico</strong> para avaliar seus níveis e a necessidade de suplementar.</p>
+                        </div>
+                    `
+                },
+                magnesio: {
+                    nome: "Magnésio",
+                    id: "magnesio",
+                    imagemPlaceholder: "https://placehold.co/600x400/fee2e2/7f1d1d?text=Magn%C3%A9sio", 
+                    descricaoCard: "Mineral essencial envolvido em centenas de reações enzimáticas, importante para função muscular, nervosa, energia e saúde óssea.",
+                    categorias: ["Minerais", "Saúde Muscular", "Energia", "Saúde Óssea", "Relaxamento"],
+                    htmlDetalhes: `
+                        <h3>O que é o Magnésio?</h3>
+                        <p>O magnésio é um mineral essencial e o quarto cátion mais abundante no corpo humano. Ele participa como cofator em mais de 300 reações enzimáticas, sendo crucial para diversas funções fisiológicas, incluindo produção de energia (ATP), síntese de DNA e RNA, função muscular e nervosa, controle da glicose no sangue, regulação da pressão arterial e desenvolvimento estrutural dos ossos.</p>
+                        
+                        <h4>Composição</h4>
+                        <ul>
+                            <li><strong>Ingrediente Ativo Principal:</strong> Sais de magnésio. Existem diversas formas (quelatos ou sais) com diferentes biodisponibilidades e características:
+                                <ul>
+                                    <li><strong>Óxido de Magnésio:</strong> Alta concentração de magnésio elementar, mas baixa biodisponibilidade; pode ter efeito laxativo.</li>
+                                    <li><strong>Citrato de Magnésio:</strong> Boa biodisponibilidade, pode ter efeito laxativo suave em algumas pessoas.</li>
+                                    <li><strong>Cloreto de Magnésio:</strong> Boa biodisponibilidade.</li>
+                                    <li><strong>Glicinato (ou Bisglicinato) de Magnésio:</strong> Magnésio quelado com o aminoácido glicina. Alta biodisponibilidade e geralmente bem tolerado, com menor efeito laxativo. Frequentemente recomendado para relaxamento e sono.</li>
+                                    <li><strong>Malato (ou Dimalato) de Magnésio:</strong> Magnésio ligado ao ácido málico. Boa biodisponibilidade, pode estar associado à produção de energia e alívio de dores musculares (exemplo: fibromialgia).</li>
+                                    <li><strong>Taurato de Magnésio:</strong> Magnésio quelado com o aminoácido taurina. Pode ter benefícios cardiovasculares.</li>
+                                    <li><strong>Treonato de Magnésio:</strong> Forma mais recente que demonstrou em estudos preliminares cruzar a barreira hematoencefálica de forma mais eficaz, com potenciais benefícios cognitivos.</li>
+                                    <li><strong>Sulfato de Magnésio (Sal de Epsom):</strong> Usado principalmente topicamente (banhos) ou intravenosamente; oralmente tem forte efeito laxativo.</li>
+                                </ul>
+                            </li>
+                            <li><strong>Excipientes Comuns:</strong> Agentes de volume (celulose microcristalina), lubrificantes (estearato de magnésio), antiumectantes (dióxido de silício), material da cápsula/comprimido. <span class="emphasis-text">Verifique o rótulo.</span></li>
+                        </ul>
+
+                        <h4>Dose Recomendada</h4>
+                        <ul>
+                            <li>As Recomendações de Ingestão Diária (IDR) para adultos variam de <span class="emphasis-text">310-420 mg de magnésio elementar por dia</span> (mulheres e homens, respectivamente).</li>
+                            <li>Suplementos geralmente fornecem de 100 mg a 400 mg de magnésio elementar por dose. A quantidade de magnésio elementar varia conforme o sal (exemplo: óxido de magnésio tem ~60% de Mg elementar, citrato tem ~16%).</li>
+                            <li>Doses mais altas podem ser usadas para corrigir deficiências, sob orientação profissional. O limite superior tolerável (UL) para magnésio suplementar (que não causa efeito laxativo) é geralmente de 350 mg/dia para adultos, além do magnésio obtido da dieta.</li>
+                        </ul>
+
+                        <h4>Forma de Uso</h4>
+                        <ul>
+                            <li>Pode ser tomado com ou sem alimentos. Tomar com alimentos pode reduzir o risco de desconforto gastrointestinal para algumas formas (como óxido ou citrato em doses maiores).</li>
+                            <li>Se usar doses mais altas, pode ser benéfico dividir ao longo do dia para melhorar a absorção e minimizar efeitos laxativos.</li>
+                            <li>Algumas formas, como o glicinato, podem ser preferidas à noite devido ao potencial efeito relaxante da glicina e do próprio magnésio.</li>
+                        </ul>
+
+                        <h4>Principais Alegações Aprovadas (ANVISA)</h4>
+                        <p>Alegações para magnésio podem incluir:</p>
+                        <ul>
+                            <li>"O magnésio auxilia na formação de ossos e dentes."</li>
+                            <li>"O magnésio auxilia no metabolismo energético."</li>
+                            <li>"O magnésio auxilia no funcionamento muscular."</li>
+                            <li>"O magnésio auxilia no funcionamento neuromuscular."</li>
+                            <li>"O magnésio auxilia no equilíbrio dos eletrólitos."</li>
+                        </ul>
+                        <p class="text-sm mt-2">(<a href="https://www.gov.br/anvisa/pt-br/assuntos/alimentos/suplementos-alimentares" target="_blank" rel="noopener noreferrer" class="anvisa-link">Consultar normativas da ANVISA</a>)</p>
+
+                        <h4>Mecanismo de Ação Simplificado</h4>
+                        <p>O magnésio é um cofator essencial para a função de centenas de enzimas. Ele estabiliza moléculas de ATP (energia); participa da contração e relaxamento muscular (atuando como um bloqueador natural dos canais de cálcio, permitindo o relaxamento muscular); regula a excitabilidade neuronal; influencia a liberação de neurotransmissores (como GABA); é necessário para a síntese de proteínas, DNA e RNA; e contribui para a estrutura óssea. Também desempenha um papel na regulação da glicose e na função cardiovascular.</p>
+                        
+                        <h4>Considerações ao Escolher um Produto Comercial</h4>
+                        <ul>
+                            <li><strong>Forma do Magnésio:</strong> Considere a biodisponibilidade e a tolerância gastrointestinal. Glicinato, malato, taurato e citrato são geralmente boas opções para absorção e tolerância. Óxido de magnésio é mais barato, mas menos absorvido e mais propenso a causar diarreia.</li>
+                            <li><strong>Magnésio Elementar:</strong> Verifique a quantidade de magnésio elementar por dose, não apenas o peso total do composto de magnésio.</li>
+                            <li><strong>Aditivos:</strong> Prefira produtos com menos aditivos desnecessários.</li>
+                            <li><strong>Objetivo:</strong> Para relaxamento e sono, glicinato pode ser interessante. Para energia e músculos, malato. Para saúde cerebral, treonato (mais caro e com pesquisa emergente).</li>
+                        </ul>
+
+                        <h4>Principais Benefícios e Evidências Científicas</h4>
+                        <ul>
+                            <li>Correção de deficiência de magnésio.</li>
+                            <li>Pode auxiliar na redução de cãibras musculares (Evidência: Moderado, especialmente em gestantes ou deficientes).</li>
+                            <li>Pode melhorar a qualidade do sono e reduzir a insônia (Evidência: Moderado).</li>
+                            <li>Pode auxiliar no controle da pressão arterial (Evidência: Moderado).</li>
+                            <li>Pode ter benefícios para enxaqueca, ansiedade e TPM (Evidência: Limitado a Moderado).</li>
+                            <li>Importante para a saúde óssea, em conjunto com cálcio e vitamina D.</li>
+                            <li>Pode melhorar a sensibilidade à insulina e o controle glicêmico (Evidência: Moderado).</li>
+                        </ul>
+                        <div class="disclaimer-box-strong mt-8">
+                            <p class="font-semibold text-lg">⚠️ Lembre-se Sempre:</p>
+                            <p>A deficiência de magnésio pode ser comum. <strong>Consulte um médico ou nutricionista</strong> para avaliar a necessidade de suplementação e a forma mais adequada.</p>
+                        </div>
+                    `
+                },
+                carotenoides: {
+                    nome: "Carotenoides",
+                    id: "carotenoides",
+                    imagemPlaceholder: "https://placehold.co/600x400/fecba1/c2410c?text=Carotenoides", 
+                    descricaoCard: "Pigmentos antioxidantes (luteína, zeaxantina, licopeno, betacaroteno) importantes para saúde ocular, pele e como precursores de Vitamina A.",
+                    categorias: ["Antioxidantes", "Saúde Ocular", "Pele", "Vitaminas (Precursor)"],
+                    htmlDetalhes: `
+                        <h3>O que são Carotenoides?</h3>
+                        <p>Carotenoides são uma classe de pigmentos lipossolúveis (solúveis em gordura) produzidos por plantas, algas e algumas bactérias e fungos. São responsáveis pelas cores vibrantes (amarelo, laranja, vermelho) de muitas frutas e vegetais. Existem mais de 600 tipos de carotenoides, mas alguns dos mais conhecidos e estudados por seus benefícios à saúde incluem Betacaroteno, Alfacaroteno, Luteína, Zeaxantina e Licopeno.</p>
+                        
+                        <h4>Composição</h4>
+                        <ul>
+                            <li><strong>Ingredientes Ativos Principais:</strong> Depende do suplemento. Pode ser um carotenoide isolado ou uma mistura.
+                                <ul>
+                                    <li><strong>Betacaroteno:</strong> Pró-vitamina A (pode ser convertido em Vitamina A no corpo).</li>
+                                    <li><strong>Luteína e Zeaxantina:</strong> Concentram-se na mácula do olho.</li>
+                                    <li><strong>Licopeno:</strong> Encontrado em tomates, potente antioxidante.</li>
+                                    <li><strong>Astaxantina:</strong> Encontrada em algas e frutos do mar (salmão, camarão), potente antioxidante.</li>
+                                </ul>
+                            </li>
+                            <li>Suplementos podem ser derivados de fontes naturais (exemplo: extrato de calêndula para luteína/zeaxantina, óleo de palma para alfa/betacaroteno, tomate para licopeno, microalgas <i>Haematococcus pluvialis</i> para astaxantina) ou sintéticos.</li>
+                            <li><strong>Excipientes Comuns:</strong> Óleo veículo (para melhor absorção, pois são lipossolúveis), material da cápsula (softgel), antioxidantes. <span class="emphasis-text">Verifique o rótulo.</span></li>
+                        </ul>
+
+                        <h4>Dose Recomendada</h4>
+                        <ul>
+                            <li>Não há IDR específica para a maioria dos carotenoides, exceto para aqueles com atividade pró-vitamina A (como o betacaroteno, expresso em Equivalentes de Atividade de Retinol - RAE).</li>
+                            <li><strong>Luteína:</strong> Doses de <span class="emphasis-text">10-20 mg/dia</span> são comuns em estudos para saúde ocular.</li>
+                            <li><strong>Zeaxantina:</strong> Frequentemente suplementada junto com luteína, em doses de <span class="emphasis-text">2-4 mg/dia</span>.</li>
+                            <li><strong>Licopeno:</strong> Doses de <span class="emphasis-text">5-30 mg/dia</span> são usadas em estudos.</li>
+                            <li><strong>Betacaroteno (como suplemento):</strong> Doses variam, mas altas doses isoladas de betacaroteno em fumantes foram associadas a riscos, por isso a obtenção através da dieta é preferível.</li>
+                            <li><strong>Astaxantina:</strong> Doses de <span class="emphasis-text">4-12 mg/dia</span> são comuns.</li>
+                        </ul>
+
+                        <h4>Forma de Uso</h4>
+                        <ul>
+                            <li>Como são lipossolúveis, carotenoides são melhor absorvidos quando tomados <span class="emphasis-text">junto com uma refeição que contenha alguma gordura</span>.</li>
+                            <li>Geralmente em cápsulas softgel.</li>
+                        </ul>
+
+                        <h4>Principais Alegações Aprovadas (ANVISA)</h4>
+                        <p>Alegações podem ser permitidas para carotenoides específicos com função comprovada:</p>
+                        <ul>
+                            <li>Betacaroteno: "O betacaroteno é fonte de vitamina A. A vitamina A auxilia na visão."</li>
+                            <li>Luteína e Zeaxantina: Podem ter alegações relacionadas à saúde ocular, como "A luteína e a zeaxantina têm ação antioxidante que protege as células contra os radicais livres. Seu consumo deve estar associado a uma alimentação equilibrada e hábitos de vida saudáveis." (A alegação exata depende da aprovação da ANVISA para o produto específico).</li>
+                        </ul>
+                        <p class="text-sm mt-2">(<a href="https://www.gov.br/anvisa/pt-br/assuntos/alimentos/suplementos-alimentares" target="_blank" rel="noopener noreferrer" class="anvisa-link">Consultar normativas da ANVISA</a>)</p>
+
+                        <h4>Mecanismo de Ação Simplificado</h4>
+                        <p>Muitos carotenoides atuam como <span class="emphasis-text">antioxidantes</span>, neutralizando radicais livres e protegendo as células contra o dano oxidativo. Luteína e zeaxantina acumulam-se na mácula do olho, onde filtram a luz azul nociva e protegem contra o estresse oxidativo. Betacaroteno e alfacaroteno podem ser convertidos em Vitamina A, essencial para a visão, função imune e saúde da pele. O licopeno é um potente antioxidante com afinidade pela próstata e pele. A astaxantina também é um antioxidante poderoso com potenciais efeitos anti-inflamatórios.</p>
+                        
+                        <h4>Considerações ao Escolher um Produto Comercial</h4>
+                        <ul>
+                            <li><strong>Carotenoide(s) Específico(s):</strong> Escolha com base no benefício desejado (exemplo: luteína/zeaxantina para olhos, licopeno para próstata/antioxidante geral).</li>
+                            <li><strong>Fonte:</strong> Natural ou sintético. Fontes naturais podem conter uma mistura de isômeros benéficos.</li>
+                            <li><strong>Dosagem:</strong> Verifique a quantidade do carotenoide ativo por cápsula.</li>
+                            <li><strong>Combinações:</strong> Alguns produtos combinam carotenoides com outras vitaminas ou antioxidantes.</li>
+                            <li><strong>Óleo Veículo:</strong> A presença de óleo na formulação (ou tomar com gordura) é importante para absorção.</li>
+                        </ul>
+
+                        <h4>Principais Benefícios e Evidências Científicas</h4>
+                        <ul>
+                            <li><strong>Luteína e Zeaxantina:</strong> Redução do risco e progressão da Degeneração Macular Relacionada à Idade (DMRI) e catarata (Evidência: Forte). Melhora da acuidade visual e sensibilidade ao contraste.</li>
+                            <li><strong>Betacaroteno:</strong> Fonte de Vitamina A, importante para visão noturna e saúde da pele (Evidência: Forte como pró-vitamina A). Como antioxidante isolado em altas doses, os resultados são mistos e podem ser prejudiciais em fumantes.</li>
+                            <li><strong>Licopeno:</strong> Potente antioxidante. Associado à saúde da próstata e cardiovascular (Evidência: Moderado).</li>
+                            <li><strong>Astaxantina:</strong> Potente antioxidante e anti-inflamatório. Benefícios potenciais para pele, olhos, saúde articular e desempenho físico (Evidência: Emergente a Moderado).</li>
+                        </ul>
+                        <div class="disclaimer-box-strong mt-8">
+                            <p class="font-semibold text-lg">⚠️ Lembre-se Sempre:</p>
+                            <p>A melhor fonte de carotenoides é uma dieta colorida rica em frutas e vegetais. <strong>Consulte um profissional de saúde</strong> antes de suplementar, especialmente com altas doses de betacaroteno se for fumante.</p>
+                        </div>
+                    `
+                },
+                fitosterois: {
+                    nome: "Fitosteróis",
+                    id: "fitosterois",
+                    imagemPlaceholder: "https://placehold.co/600x400/fee2e2/b91c1c?text=Fitoster%C3%B3is", 
+                    descricaoCard: "Compostos vegetais que podem auxiliar na redução da absorção de colesterol, contribuindo para a saúde cardiovascular.",
+                    categorias: ["Saúde Cardiovascular", "Colesterol"],
+                    htmlDetalhes: `
+                        <h3>O que são Fitosteróis?</h3>
+                        <p>Fitosteróis (também conhecidos como esteróis vegetais e estanóis vegetais) são compostos de ocorrência natural encontrados em pequenas quantidades em muitos alimentos de origem vegetal, como óleos vegetais, nozes, sementes, grãos, frutas e vegetais. Eles têm uma estrutura química semelhante ao colesterol animal.</p>
+                        
+                        <h4>Composição</h4>
+                        <ul>
+                            <li><strong>Ingredientes Ativos Principais:</strong> Esteróis vegetais (exemplo: beta-sitosterol, campesterol, estigmasterol) ou suas formas hidrogenadas, os estanóis vegetais.</li>
+                            <li>Suplementos podem conter fitosteróis livres ou esterificados (ligados a ácidos graxos para melhor solubilidade em gorduras).</li>
+                            <li><strong>Excipientes Comuns:</strong> Óleo veículo (em softgels), material da cápsula, agentes de volume. Alguns alimentos são enriquecidos com fitosteróis (margarinas, iogurtes). <span class="emphasis-text">Verifique o rótulo.</span></li>
+                        </ul>
+
+                        <h4>Dose Recomendada</h4>
+                        <ul>
+                            <li>Para a redução do colesterol LDL ("colesterol ruim"), a dose eficaz de fitosteróis é de <span class="emphasis-text">1.5 a 3 gramas por dia</span>.</li>
+                            <li>Doses acima de 3 gramas/dia geralmente não oferecem benefícios adicionais na redução do colesterol.</li>
+                            <li>A ANVISA reconhece o benefício para doses a partir de 1g/dia.</li>
+                        </ul>
+
+                        <h4>Forma de Uso</h4>
+                        <ul>
+                            <li>Devem ser consumidos <span class="emphasis-text">junto com as refeições</span>, especialmente aquelas que contêm gordura, para máxima eficácia na competição com a absorção do colesterol.</li>
+                            <li>A dose diária total pode ser dividida entre 2-3 refeições.</li>
+                            <li>Disponíveis em cápsulas, comprimidos ou adicionados a alimentos funcionais.</li>
+                        </ul>
+
+                        <h4>Principais Alegações Aprovadas (ANVISA)</h4>
+                        <p>Alegações para fitosteróis são bem estabelecidas e podem incluir:</p>
+                        <ul>
+                            <li>"Os fitosteróis auxiliam na redução da absorção de colesterol. Seu consumo deve estar associado a uma alimentação equilibrada e hábitos de vida saudáveis."</li>
+                        </ul>
+                        <p class="text-sm mt-2">(<a href="https://www.gov.br/anvisa/pt-br/assuntos/alimentos/suplementos-alimentares" target="_blank" rel="noopener noreferrer" class="anvisa-link">Consultar normativas da ANVISA</a>)</p>
+
+                        <h4>Mecanismo de Ação Simplificado</h4>
+                        <p>Os fitosteróis competem com o colesterol (tanto o dietético quanto o biliar) pela absorção no intestino delgado. Devido à sua semelhança estrutural, eles deslocam o colesterol das micelas (pequenas partículas que transportam gorduras para absorção), resultando em menor absorção de colesterol para a corrente sanguínea. O colesterol não absorvido é então excretado nas fezes. Isso leva a uma redução dos níveis de colesterol LDL no sangue.</p>
+                        
+                        <h4>Considerações ao Escolher um Produto Comercial</h4>
+                        <ul>
+                            <li><strong>Quantidade de Fitosteróis Ativos:</strong> Verifique a quantidade de esteróis/estanóis livres por porção.</li>
+                            <li><strong>Forma Esterificada ou Livre:</strong> Ambas são eficazes, mas as esterificadas são mais comuns em alimentos enriquecidos devido à solubilidade.</li>
+                            <li><strong>Fonte:</strong> Geralmente derivados de óleos vegetais (soja, pinho).</li>
+                            <li><strong>Alimentos Enriquecidos vs. Suplementos:</strong> Alimentos enriquecidos (margarinas, iogurtes, leites) podem ser uma forma conveniente de consumo, mas atente-se a outros componentes desses alimentos (gorduras, açúcares). Suplementos oferecem uma dose concentrada.</li>
+                        </ul>
+
+                        <h4>Principais Benefícios e Evidências Científicas</h4>
+                        <ul>
+                            <li>Redução dos níveis de colesterol LDL (Evidência: Forte). Uma ingestão de 2g/dia de fitosteróis pode reduzir o LDL em cerca de 8-10%.</li>
+                            <li>Contribuição para a saúde cardiovascular através da melhora do perfil lipídico.</li>
+                        </ul>
+                        
+                        <h4>Possíveis Efeitos Colaterais e Segurança</h4>
+                        <ul>
+                            <li>Geralmente bem tolerados.</li>
+                            <li>Podem causar leve desconforto gastrointestinal em algumas pessoas.</li>
+                            <li>Podem reduzir ligeiramente a absorção de vitaminas lipossolúveis (A, D, E, K) e carotenoides com o uso a longo prazo. No entanto, o impacto nos níveis sanguíneos dessas vitaminas é geralmente pequeno e não considerado clinicamente significativo para a maioria das pessoas que mantêm uma dieta equilibrada. Consumir muitas frutas e vegetais pode compensar.</li>
+                            <li>Não são recomendados para gestantes, lactantes e crianças pequenas sem orientação médica, pois o colesterol é importante para o desenvolvimento.</li>
+                            <li>Pessoas com sitosterolemia (uma doença genética rara) devem evitar fitosteróis.</li>
+                        </ul>
+
+                        <h4>Interações</h4>
+                        <ul>
+                            <li><strong>Medicamentos para Redução de Colesterol (Estatinas):</strong> Fitosteróis podem ter um efeito aditivo às estatinas na redução do LDL, o que pode ser benéfico, mas deve ser discutido com o médico.</li>
+                            <li><strong>Ezetimiba:</strong> A ezetimiba também bloqueia a absorção de colesterol, mas por um mecanismo diferente. O uso concomitante pode ter efeitos aditivos.</li>
+                        </ul>
+                        <div class="disclaimer-box-strong mt-8">
+                            <p class="font-semibold text-lg">⚠️ Lembre-se Sempre:</p>
+                            <p>Fitosteróis são um auxílio no manejo do colesterol, mas não substituem uma dieta saudável, exercícios e, se necessário, medicamentos prescritos. <strong>Consulte seu médico ou nutricionista</strong>.</p>
+                        </div>
+                    `
+                },
+                coenzimaQ10: {
+                    nome: "Coenzima Q10 (CoQ10)",
+                    id: "coenzimaQ10",
+                    imagemPlaceholder: "https://placehold.co/600x400/fca5a5/7f1d1d?text=Coenzima+Q10", 
+                    descricaoCard: "Antioxidante e componente vital na produção de energia celular (ATP), importante para a saúde cardíaca e energia geral.",
+                    categorias: ["Energia", "Antioxidantes", "Saúde Cardiovascular"],
+                    htmlDetalhes: `
+                        <h3>O que é a Coenzima Q10 (CoQ10)?</h3>
+                        <p>A Coenzima Q10 (CoQ10), também conhecida como ubiquinona ou ubiquinol (sua forma reduzida e ativa), é uma substância semelhante a uma vitamina, lipossolúvel, que está presente em praticamente todas as células do corpo humano. É fundamental para a produção de energia celular (ATP) nas mitocôndrias e também atua como um potente antioxidante.</p>
+                        
+                        <h4>Composição</h4>
+                        <ul>
+                            <li><strong>Ingrediente Ativo Principal:</strong> Coenzima Q10. Pode estar na forma de Ubiquinona (oxidada) ou Ubiquinol (reduzida). O ubiquinol é geralmente mais biodisponível, especialmente em indivíduos mais velhos ou com certas condições, mas também é mais caro e menos estável.</li>
+                            <li>A produção de CoQ10 pelo corpo tende a diminuir com a idade e pode ser afetada por certas doenças ou medicamentos (exemplo: estatinas).</li>
+                            <li><strong>Excipientes Comuns:</strong> Óleo veículo (exemplo: óleo de soja, farelo de arroz, azeite) para melhorar a absorção, material da cápsula (softgel), emulsificantes, corantes. <span class="emphasis-text">Verifique o rótulo.</span></li>
+                        </ul>
+
+                        <h4>Dose Recomendada</h4>
+                        <ul>
+                            <li>Não há IDR estabelecida, pois o corpo a produz.</li>
+                            <li>Para suplementação geral e suporte antioxidante, doses de <span class="emphasis-text">30-200 mg/dia</span> são comuns.</li>
+                            <li>Para condições específicas (exemplo: saúde cardíaca, enxaqueca, uso de estatinas), doses mais altas, de <span class="emphasis-text">100-600 mg/dia</span> ou mais, podem ser utilizadas sob orientação profissional.</li>
+                            <li>Doses acima de 100 mg/dia são geralmente divididas ao longo do dia para melhor absorção.</li>
+                        </ul>
+
+                        <h4>Forma de Uso</h4>
+                        <ul>
+                            <li>Como é lipossolúvel, a CoQ10 é melhor absorvida quando tomada <span class="emphasis-text">junto com uma refeição que contenha gorduras</span>.</li>
+                            <li>Disponível em cápsulas gelatinosas (softgels), comprimidos, cápsulas duras e formas líquidas. Softgels com óleo veículo são geralmente preferidos para absorção.</li>
+                        </ul>
+
+                        <h4>Principais Alegações Aprovadas (ANVISA)</h4>
+                        <p>A Coenzima Q10 é classificada como um "constituinte alimentar" ou "substância bioativa" em suplementos. Alegações podem incluir:</p>
+                        <ul>
+                            <li>"A Coenzima Q10 é um antioxidante que auxilia na proteção dos danos causados pelos radicais livres."</li>
+                            <li>Alegações relacionadas à produção de energia podem ser permitidas dependendo da formulação e comprovação.</li>
+                        </ul>
+                        <p class="text-sm mt-2">(<a href="https://www.gov.br/anvisa/pt-br/assuntos/alimentos/suplementos-alimentares" target="_blank" rel="noopener noreferrer" class="anvisa-link">Consultar normativas da ANVISA</a>)</p>
+
+                        <h4>Mecanismo de Ação Simplificado</h4>
+                        <p>A CoQ10 desempenha dois papéis principais:
+                            <ol>
+                                <li><strong>Produção de Energia:</strong> É um componente essencial da cadeia de transporte de elétrons nas mitocôndrias, o processo pelo qual as células geram ATP (energia). É particularmente vital para órgãos com alta demanda energética, como coração, fígado e rins.</li>
+                                <li><strong>Ação Antioxidante:</strong> Na sua forma reduzida (ubiquinol), é um potente antioxidante lipossolúvel que protege as membranas celulares e lipoproteínas (como o LDL colesterol) contra o dano oxidativo causado pelos radicais livres. Também pode regenerar outros antioxidantes, como a vitamina E.</li>
+                            </ol>
+                        </p>
+                        
+                        <h4>Considerações ao Escolher um Produto Comercial</h4>
+                        <ul>
+                            <li><strong>Forma: Ubiquinona vs. Ubiquinol.</strong> Ubiquinol é a forma ativa e mais biodisponível, mas mais cara. Para a maioria dos adultos jovens e saudáveis, o corpo consegue converter ubiquinona em ubiquinol eficientemente. Idosos ou pessoas com certas condições podem se beneficiar mais do ubiquinol.</li>
+                            <li><strong>Solubilidade e Absorção:</strong> Procure formulações que melhorem a absorção, como aquelas em base oleosa ou com tecnologias de dispersão.</li>
+                            <li><strong>Dosagem:</strong> Escolha a dosagem de acordo com sua necessidade e orientação profissional.</li>
+                            <li><strong>Pureza e Qualidade:</strong> Opte por marcas com boa reputação e, se possível, com certificações de qualidade.</li>
+                        </ul>
+
+                        <h4>Principais Benefícios e Evidências Científicas</h4>
+                        <ul>
+                            <li><strong>Saúde Cardiovascular:</strong> Pode melhorar sintomas de insuficiência cardíaca, auxiliar na recuperação após cirurgia cardíaca e reduzir a pressão arterial (Evidência: Moderado a Forte).</li>
+                            <li><strong>Usuários de Estatinas:</strong> Estatinas (medicamentos para colesterol) podem reduzir os níveis de CoQ10 no corpo. A suplementação pode ajudar a aliviar dores musculares associadas às estatinas (mialgia) (Evidência: Moderado, resultados mistos).</li>
+                            <li><strong>Enxaqueca:</strong> Pode reduzir a frequência de enxaquecas (Evidência: Moderado).</li>
+                            <li><strong>Energia e Fadiga:</strong> Pode ajudar a reduzir a fadiga e melhorar a produção de energia, especialmente em pessoas com deficiência ou certas condições (Evidência: Limitado a Moderado).</li>
+                            <li><strong>Doença de Parkinson:</strong> Pesquisas iniciais sugeriram benefícios, mas estudos maiores não confirmaram efeitos significativos na progressão da doença.</li>
+                            <li><strong>Fertilidade Masculina:</strong> Pode melhorar a motilidade dos espermatozoides (Evidência: Moderado).</li>
+                            <li><strong>Antioxidante Geral:</strong> Protege contra o estresse oxidativo.</li>
+                        </ul>
+                        
+                        <h4>Possíveis Efeitos Colaterais e Segurança</h4>
+                        <ul>
+                            <li>Geralmente bem tolerada e considerada segura nas doses recomendadas.</li>
+                            <li>Efeitos colaterais são raros e leves, podendo incluir desconforto gastrointestinal (náusea, diarreia), perda de apetite ou dor de cabeça.</li>
+                            <li>Doses muito altas (acima de 300mg) podem, raramente, elevar enzimas hepáticas em algumas pessoas, mas isso geralmente é reversível com a interrupção.</li>
+                        </ul>
+
+                        <h4>Interações</h4>
+                        <ul>
+                            <li><strong>Varfarina (Anticoagulante):</strong> A CoQ10 tem uma estrutura semelhante à Vitamina K2 e teoricamente poderia diminuir a eficácia da varfarina. Pacientes em uso de varfarina devem consultar o médico antes de usar CoQ10 e monitorar o INR.</li>
+                            <li><strong>Medicamentos para Pressão Arterial:</strong> Como a CoQ10 pode reduzir a pressão arterial, a combinação com anti-hipertensivos pode potencializar esse efeito. Monitorar a pressão.</li>
+                            <li><strong>Quimioterapia:</strong> Alguns estudos sugerem que antioxidantes como a CoQ10 podem interferir na eficácia de certos agentes quimioterápicos. Consulte um oncologista.</li>
+                        </ul>
+                        <div class="disclaimer-box-strong mt-8">
+                            <p class="font-semibold text-lg">⚠️ Lembre-se Sempre:</p>
+                            <p>Embora a CoQ10 seja produzida pelo corpo, sua suplementação pode ser benéfica em certas situações. <strong>Consulte seu médico ou nutricionista</strong> para determinar a necessidade e a dose adequada.</p>
+                        </div>
+                    `
+                },
+                resveratrol: {
+                    nome: "Resveratrol",
+                    id: "resveratrol",
+                    imagemPlaceholder: "https://placehold.co/600x400/fda4af/881337?text=Resveratrol", 
+                    descricaoCard: "Polifenol antioxidante encontrado em uvas e outras plantas, associado a benefícios cardiovasculares e anti-envelhecimento.",
+                    categorias: ["Antioxidantes", "Saúde Cardiovascular", "Anti-envelhecimento"],
+                    htmlDetalhes: `
+                        <h3>O que é o Resveratrol?</h3>
+                        <p>O resveratrol é um composto polifenólico natural encontrado em várias plantas, especialmente na casca de uvas vermelhas e roxas, vinho tinto, mirtilos, cranberries, amendoim e na planta <i>Polygonum cuspidatum</i> (knotweed japonês), que é uma fonte comum para suplementos. Ganhou notoriedade devido ao "paradoxo francês" – a observação de que os franceses, apesar de uma dieta rica em gorduras saturadas, tinham baixas taxas de doença cardíaca, o que foi parcialmente atribuído ao consumo de vinho tinto.</p>
+                        
+                        <h4>Composição</h4>
+                        <ul>
+                            <li><strong>Ingrediente Ativo Principal:</strong> Trans-resveratrol é a forma isomérica biologicamente ativa e mais estudada. Alguns suplementos podem conter uma mistura de trans- e cis-resveratrol, mas o trans-resveratrol é o preferido.</li>
+                            <li><strong>Fonte:</strong> Extrato de <i>Polygonum cuspidatum</i> (raiz) é uma fonte comum e concentrada. Extrato de semente ou casca de uva também são usados.</li>
+                            <li><strong>Excipientes Comuns:</strong> Material da cápsula, agentes de volume, antiumectantes. <span class="emphasis-text">Verifique o rótulo.</span></li>
+                        </ul>
+
+                        <h4>Dose Recomendada</h4>
+                        <ul>
+                            <li>Não há IDR estabelecida. As doses em suplementos variam amplamente.</li>
+                            <li>Doses de <span class="emphasis-text">100 mg a 500 mg de trans-resveratrol por dia</span> são frequentemente usadas em estudos e suplementos. Doses mais altas (até 1-5 gramas) foram usadas em pesquisas, mas podem estar associadas a mais efeitos colaterais e a biodisponibilidade do resveratrol oral é relativamente baixa e ele é rapidamente metabolizado.</li>
+                            <li>A suplementação com doses mais baixas, mas consistentes, pode ser mais benéfica a longo prazo.</li>
+                        </ul>
+
+                        <h4>Forma de Uso</h4>
+                        <ul>
+                            <li>A absorção do resveratrol pode ser melhorada quando tomado com uma refeição que contenha alguma gordura, embora não seja estritamente necessário.</li>
+                            <li>Devido ao rápido metabolismo, dividir a dose diária pode ajudar a manter níveis mais estáveis, mas a praticidade de dose única é comum.</li>
+                            <li>Alguns estudos sugerem que a combinação com piperina (extrato de pimenta preta) pode aumentar sua biodisponibilidade.</li>
+                        </ul>
+
+                        <h4>Principais Alegações Aprovadas (ANVISA)</h4>
+                        <p>O resveratrol é considerado uma substância bioativa. Alegações específicas dependem de comprovação científica robusta, que ainda está em desenvolvimento para muitos dos seus potenciais benefícios. Uma alegação genérica poderia ser:</p>
+                        <ul>
+                            <li>"O resveratrol é um antioxidante que auxilia na proteção dos danos causados pelos radicais livres." (Se comprovada a ação antioxidante do produto específico).</li>
+                        </ul>
+                        <p class="text-sm mt-2">Alegações mais fortes sobre saúde cardiovascular ou anti-envelhecimento ainda são mais comuns em contextos de pesquisa do que em rótulos aprovados. (<a href="https://www.gov.br/anvisa/pt-br/assuntos/alimentos/suplementos-alimentares" target="_blank" rel="noopener noreferrer" class="anvisa-link">Consultar normativas da ANVISA</a>)</p>
+
+                        <h4>Mecanismo de Ação Simplificado</h4>
+                        <p>O resveratrol possui múltiplos mecanismos de ação potenciais:
+                            <ol>
+                                <li><strong>Antioxidante:</strong> Neutraliza radicais livres e pode aumentar a produção de enzimas antioxidantes endógenas.</li>
+                                <li><strong>Anti-inflamatório:</strong> Pode inibir vias inflamatórias, como a do NF-kB.</li>
+                                <li><strong>Ativação de Sirtuínas:</strong> Particularmente a SIRT1, uma proteína associada à longevidade e ao metabolismo celular saudável. Este é um dos mecanismos mais estudados em relação aos seus efeitos "anti-envelhecimento".</li>
+                                <li><strong>Efeitos Cardiovasculares:</strong> Pode melhorar a função endotelial, reduzir a oxidação do LDL colesterol, e ter efeitos antiplaquetários.</li>
+                                <li><strong>Modulação do Metabolismo:</strong> Pode influenciar a sensibilidade à insulina e o metabolismo da glicose.</li>
+                            </ol>
+                        </p>
+                        
+                        <h4>Considerações ao Escolher um Produto Comercial</h4>
+                        <ul>
+                            <li><strong>Conteúdo de Trans-Resveratrol:</strong> Verifique a quantidade específica de trans-resveratrol, pois esta é a forma ativa.</li>
+                            <li><strong>Fonte:</strong> Extrato de <i>Polygonum cuspidatum</i> é geralmente padronizado para um alto teor de trans-resveratrol.</li>
+                            <li><strong>Pureza:</strong> Escolha marcas com boa reputação.</li>
+                            <li><strong>Biodisponibilidade:</strong> Alguns produtos podem incluir ingredientes para tentar melhorar a absorção (exemplo: piperina), mas a evidência para isso ainda está sendo consolidada.</li>
+                        </ul>
+
+                        <h4>Principais Benefícios e Evidências Científicas</h4>
+                        <p>A pesquisa sobre resveratrol é extensa, mas muitos estudos são em animais ou in vitro. Estudos em humanos têm resultados promissores, mas por vezes inconsistentes ou necessitando de mais confirmação:</p>
+                        <ul>
+                            <li><strong>Saúde Cardiovascular:</strong> Pode melhorar marcadores de saúde cardiovascular, como função endotelial e perfil lipídico (Evidência: Moderado).</li>
+                            <li><strong>Controle Glicêmico:</strong> Pode melhorar a sensibilidade à insulina e o controle da glicose em alguns indivíduos (Evidência: Moderado).</li>
+                            <li><strong>Anti-envelhecimento e Longevidade:</strong> Efeitos demonstrados em organismos mais simples (leveduras, vermes, moscas). Em humanos, a evidência é indireta e ainda especulativa, principalmente através da ativação de sirtuínas (Evidência: Limitado/Especulativo).</li>
+                            <li><strong>Neuroproteção:</strong> Potencial para proteger contra doenças neurodegenerativas (Evidência: Preliminar, principalmente em modelos animais).</li>
+                            <li><strong>Anti-inflamatório e Antioxidante:</strong> (Evidência: Moderado).</li>
+                        </ul>
+                        
+                        <h4>Possíveis Efeitos Colaterais e Segurança</h4>
+                        <ul>
+                            <li>Geralmente bem tolerado em doses moderadas (até 500 mg/dia).</li>
+                            <li>Doses mais altas (acima de 1g/dia) podem causar desconforto gastrointestinal leve (náusea, diarreia).</li>
+                            <li>Devido aos seus efeitos antiplaquetários, pode, teoricamente, aumentar o risco de sangramento se usado com anticoagulantes, embora isso não tenha sido consistentemente demonstrado em humanos em doses usuais de suplementação.</li>
+                        </ul>
+
+                        <h4>Interações</h4>
+                        <ul>
+                            <li><strong>Medicamentos Anticoagulantes/Antiplaquetários (Varfarina, AAS, Clopidogrel):</strong> Cautela devido ao potencial efeito antiplaquetário do resveratrol. Consulte um médico.</li>
+                            <li><strong>Medicamentos Metabolizados pelo Citocromo P450:</strong> O resveratrol pode inibir certas enzimas do citocromo P450 (exemplo: CYP3A4, CYP2C9), o que poderia, teoricamente, aumentar os níveis e efeitos de medicamentos metabolizados por essas vias. Relevância clínica em doses usuais de suplementação ainda não totalmente clara.</li>
+                        </ul>
+                        <div class="disclaimer-box-strong mt-8">
+                            <p class="font-semibold text-lg">⚠️ Lembre-se Sempre:</p>
+                            <p>A pesquisa sobre resveratrol é promissora, mas muitos benefícios ainda precisam de mais confirmação em estudos humanos robustos. <strong>Consulte seu médico ou nutricionista</strong> antes de iniciar a suplementação.</p>
+                        </div>
+                    `
+                }
+            };
+
+            // --- Lógica do Catálogo de Suplementos Dinâmico ---
+            const catalogoGrid = document.getElementById('catalogo-grid');
+            const detalhesSuplementoContainer = document.getElementById('detalhes-suplemento-container');
+            const templateDetalhes = document.getElementById('template-suplemento-detalhes');
+
+            function popularCatalogo() {
+                catalogoGrid.innerHTML = ''; 
+                Object.keys(dadosSuplementos).forEach(key => {
+                    const suplemento = dadosSuplementos[key];
+                    const card = document.createElement('div');
+                    card.className = 'suplemento-card';
+                    // Atualiza o botão para usar a classe .cta-button-card
+                    card.innerHTML = `
+                        <img src="${suplemento.imagemPlaceholder}" alt="[Imagem de ${suplemento.nome}]" onerror="this.onerror=null;this.src='https://placehold.co/600x400/cccccc/333333?text=Imagem+Indispon%C3%ADvel';">
+                        <div class="suplemento-card-content">
+                            <h3 class="suplemento-card-title">${suplemento.nome}</h3>
+                            ${suplemento.categorias ? suplemento.categorias.map(cat => `<span class="category-tag">${cat}</span>`).join('') : ''}
+                            <p class="suplemento-card-desc">${suplemento.descricaoCard}</p>
+                            <button data-suplemento="${suplemento.id}" class="cta-button-card mt-auto suplemento-trigger-button">Ver Detalhes</button>
+                        </div>
+                    `;
+                    catalogoGrid.appendChild(card);
+                });
+                reatribuirEventListenersTrigger();
+            }
+            
+            function reatribuirEventListenersTrigger() {
+                const suplementoTriggerButtons = document.querySelectorAll('.suplemento-trigger-button');
+                suplementoTriggerButtons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        const suplementoId = button.dataset.suplemento;
+                        const dados = dadosSuplementos[suplementoId];
+
+                        if (dados && templateDetalhes) {
+                            detalhesSuplementoContainer.innerHTML = ''; 
+                            
+                            const clone = templateDetalhes.content.cloneNode(true);
+                            const detalheContentDiv = clone.querySelector('.suplemento-detalhe-content');
+                            
+                            detalheContentDiv.id = `suplemento-${suplementoId}-detalhes`; 
+                            clone.querySelector('.suplemento-nome-titulo').textContent = dados.nome;
+                            clone.querySelector('.suplemento-imagem').src = dados.imagemPlaceholder;
+                            clone.querySelector('.suplemento-imagem').alt = `[Imagem de ${dados.nome}]`;
+                            clone.querySelector('.suplemento-info-completa').innerHTML = dados.htmlDetalhes;
+                            
+                            clone.querySelector('.voltar-catalogo-btn').addEventListener('click', () => {
+                                detalhesSuplementoContainer.innerHTML = ''; 
+                                detalhesSuplementoContainer.classList.add('hidden-section');
+                                const visibleSection = detalhesSuplementoContainer.querySelector('.suplemento-detalhe-section.visible');
+                                if(visibleSection) visibleSection.classList.remove('visible');
+
+                                const catalogoHome = document.getElementById('catalogo-home');
+                                if (catalogoHome) {
+                                    const catalogoPosition = catalogoHome.getBoundingClientRect().top;
+                                    const offsetPosition = catalogoPosition + window.pageYOffset - headerOffset;
+                                    window.scrollTo({ top: offsetPosition, behavior: 'smooth'});
+                                }
+                            });
+
+                            detalhesSuplementoContainer.appendChild(clone);
+                            detalhesSuplementoContainer.classList.remove('hidden-section');
+                            
+                            setTimeout(() => {
+                                const newSection = detalhesSuplementoContainer.querySelector('.suplemento-detalhe-content');
+                                if(newSection) {
+                                    newSection.parentElement.classList.add('visible');
+                                }
+                            }, 50);
+
+                            const containerPosition = detalhesSuplementoContainer.getBoundingClientRect().top;
+                            const offsetPosition = containerPosition + window.pageYOffset - headerOffset;
+                            window.scrollTo({ top: offsetPosition, behavior: 'smooth'});
+                        }
+                    });
+                });
+            }
+            
+            popularCatalogo();
+
+            // --- Lógica do Assistente de Interações com IA Gemini ---
+            const btnVerificarInteracaoIA = document.getElementById('btn-verificar-interacao-ia');
+            const resultadoInteracaoIADiv = document.getElementById('resultado-interacao-ia');
+
+            if (btnVerificarInteracaoIA) {
+                btnVerificarInteracaoIA.addEventListener('click', async () => {
+                    const item1Input = document.getElementById('item1-interacao').value.trim();
+                    const item2Input = document.getElementById('item2-interacao').value.trim();
+                    
+                    resultadoInteracaoIADiv.classList.remove('hidden-section');
+                    resultadoInteracaoIADiv.innerHTML = "<div class='loader'></div><p class='text-center text-slate-600'>Analisando interação com IA... Por favor, aguarde.</p>";
+                    resultadoInteracaoIADiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+
+                    if (!item1Input || !item2Input) {
+                        resultadoInteracaoIADiv.innerHTML = "<p class='text-red-600 font-medium'>Por favor, insira os dois itens para verificação.</p>";
+                        return;
+                    }
+                    if (item1Input.toLowerCase() === item2Input.toLowerCase()) {
+                         resultadoInteracaoIADiv.innerHTML = "<p class='text-orange-600 font-medium'>Você inseriu o mesmo item duas vezes. Por favor, insira dois itens diferentes.</p>";
+                         return;
+                    }
+
+                    const prompt = `Por favor, analise a possível interação medicamentosa e/ou alimentar entre "${item1Input}" e "${item2Input}". 
+                    Descreva de forma clara e concisa:
+                    1. A natureza da possível interação (exemplo: farmacocinética, farmacodinâmica, sinergia, antagonismo).
+                    2. Os riscos potenciais ou efeitos adversos que podem surgir.
+                    3. Recomendações gerais ou precauções a serem consideradas.
+                    4. Se a combinação é geralmente considerada segura, de baixo risco, requer cautela, ou deve ser evitada.
+                    Enfatize que esta informação é para fins educativos, gerada por IA, e não substitui o aconselhamento de um profissional de saúde qualificado (médico, farmacêutico, nutricionista). Recomende fortemente a consulta a um profissional antes de tomar qualquer decisão sobre saúde ou tratamento.
+                    Formate a resposta com parágrafos curtos e use negrito para destacar os pontos chave (use tags HTML <strong> para negrito).`;
+
+                    let chatHistory = [];
+                    chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+                    const payload = { contents: chatHistory };
+                    const apiKey = ""; 
+                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+                    let mensagem = "";
+
+                    try {
+                        const response = await fetch(apiUrl, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(payload)
+                        });
+
+                        if (!response.ok) {
+                            let errorDetails = `Erro HTTP: ${response.status}`;
+                            try {
+                                const errorData = await response.json();
+                                errorDetails += ` - ${errorData.error?.message || JSON.stringify(errorData)}`;
+                            } catch (e) { /* Ignora */ }
+                            throw new Error(errorDetails);
+                        }
+
+                        const result = await response.json();
+
+                        if (result.candidates && result.candidates.length > 0 &&
+                            result.candidates[0].content && result.candidates[0].content.parts &&
+                            result.candidates[0].content.parts.length > 0) {
+                            let text = result.candidates[0].content.parts[0].text;
+                            text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                            const formattedText = text.replace(/\n\n/g, '</p><p class="mt-2">').replace(/\n/g, '<br>');
+                            mensagem = `<h4 class='text-lg font-semibold text-red-700 mb-3'>Análise da Interação (Fornecida por IA):</h4><div class='space-y-3 text-sm'>${formattedText}</div>`;
+                        } else {
+                            mensagem = "<p class='text-orange-600 font-medium'>Não foi possível obter uma resposta da IA para esta combinação. Verifique os termos inseridos ou tente novamente mais tarde.</p>";
+                            if (result.promptFeedback && result.promptFeedback.blockReason) {
+                                mensagem += `<p class='text-xs text-slate-500 mt-1'>Motivo do bloqueio pela IA: ${result.promptFeedback.blockReason}</p>`;
+                            }
+                        }
+                    } catch (error) {
+                        console.error("Erro ao chamar a API Gemini:", error);
+                        mensagem = `<p class='text-red-600 font-medium'>Ocorreu um erro ao tentar verificar a interação. Por favor, tente novamente mais tarde.</p><p class='text-xs text-slate-500 mt-1'>Detalhes do erro: ${error.message}</p>`;
+                    }
+                    resultadoInteracaoIADiv.innerHTML = mensagem;
+                });
+            }
+
+
+            // --- Lógica do Assistente de Nutrição ---
+            const formNutricao = document.getElementById('form-nutricao');
+            const resultadoNutricaoDiv = document.getElementById('resultado-nutricao');
+
+            if (formNutricao) {
+                formNutricao.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const idade = parseInt(document.getElementById('idade-nutricao').value);
+                    const sexo = document.getElementById('sexo-nutricao').value;
+                    const peso = parseFloat(document.getElementById('peso-nutricao').value);
+                    const altura = parseInt(document.getElementById('altura-nutricao').value);
+                    const fatorAtividade = parseFloat(document.getElementById('atividade-nutricao').value);
+
+                    if (isNaN(idade) || isNaN(peso) || isNaN(altura) || !sexo || !fatorAtividade || idade <=0 || peso <=0 || altura <=0) {
+                        resultadoNutricaoDiv.innerHTML = "<p class='text-red-600 font-medium'>Por favor, preencha todos os campos com valores válidos.</p>";
+                        resultadoNutricaoDiv.classList.remove('hidden-section');
+                        resultadoNutricaoDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        return;
+                    }
+
+                    let tmb; 
+                    if (sexo === 'masculino') {
+                        tmb = (10 * peso) + (6.25 * altura) - (5 * idade) + 5;
+                    } else { 
+                        tmb = (10 * peso) + (6.25 * altura) - (5 * idade) - 161;
+                    }
+                    const get = tmb * fatorAtividade; 
+
+                    const proteinasCalorias = get * 0.30;
+                    const proteinasGramas = proteinasCalorias / 4;
+                    const gordurasCalorias = get * 0.30;
+                    const gordurasGramas = gordurasCalorias / 9;
+                    const carboidratosCalorias = get * 0.40; 
+                    const carboidratosGramas = carboidratosCalorias / 4;
+
+                    let resultadoHTML = `<h4 class='text-xl font-bold text-red-700 mb-4'>Suas Estimativas Nutricionais:</h4>`;
+                    resultadoHTML += `<div class='space-y-2 text-slate-700'>`;
+                    resultadoHTML += `<p><strong>Taxa Metabólica Basal (TMB):</strong> <span class='font-semibold text-red-600'>${tmb.toFixed(0)} kcal/dia</span></p>`;
+                    resultadoHTML += `<p><strong>Gasto Energético Total (GET) Estimado:</strong> <span class='font-semibold text-red-600'>${get.toFixed(0)} kcal/dia</span></p>`;
+                    resultadoHTML += `</div>`;
+                    resultadoHTML += `<h5 class='text-lg font-semibold text-red-600 mt-6 mb-3'>Sugestão de Distribuição de Macronutrientes (Exemplo 40C/30P/30G):</h5>`;
+                    resultadoHTML += `<ul class='list-none space-y-2 text-slate-700'>`;
+                    resultadoHTML += `<li><strong>Carboidratos:</strong> ${carboidratosGramas.toFixed(0)}g (<span class='text-sm'>${carboidratosCalorias.toFixed(0)} kcal</span>) - <span class='font-medium text-rose-600'>~${(carboidratosCalorias/get*100).toFixed(0)}%</span></li>`;
+                    resultadoHTML += `<li><strong>Proteínas:</strong> ${proteinasGramas.toFixed(0)}g (<span class='text-sm'>${proteinasCalorias.toFixed(0)} kcal</span>) - <span class='font-medium text-rose-600'>~${(proteinasCalorias/get*100).toFixed(0)}%</span></li>`;
+                    resultadoHTML += `<li><strong>Gorduras:</strong> ${gordurasGramas.toFixed(0)}g (<span class='text-sm'>${gordurasCalorias.toFixed(0)} kcal</span>) - <span class='font-medium text-rose-600'>~${(gordurasCalorias/get*100).toFixed(0)}%</span></li>`;
+                    resultadoHTML += `</ul>`;
+                    resultadoHTML += `<p class='mt-6 text-xs text-slate-500 leading-normal'><strong>Nota Importante:</strong> Esta é uma distribuição de exemplo. As proporções ideais de macronutrientes podem variar significativamente com base em objetivos individuais (hipertrofia, perda de peso, performance), preferências alimentares e condições de saúde. Consulte um nutricionista para um plano personalizado.</p>`;
+
+                    resultadoNutricaoDiv.innerHTML = resultadoHTML;
+                    resultadoNutricaoDiv.classList.remove('hidden-section');
+                    resultadoNutricaoDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                });
+            }
+        });
+    </script>
+
+</body>
+</html>
